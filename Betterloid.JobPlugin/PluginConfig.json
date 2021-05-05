@@ -1,0 +1,11 @@
+{
+  "PluginActive": "true",
+  "PluginAuthor": "SeleDreams",
+  "PluginType": "Editor",
+  "PluginAssemblyV5": "netframework4.6/JobPlugin.dll",
+  "PluginAssemblyV6": "net6.0-windows/JobPlugin.dll",
+  "PluginName": "JobPlugin",
+  "PluginVersion": "1.0.0",
+  "PluginNamespace": "JobPlugin",
+  "PluginClass": "JobPlugin"
+}

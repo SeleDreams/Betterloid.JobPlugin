@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net6.0-windows;netframework4.6</TargetFrameworks>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <LangVersion>5</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AppendTargetFrameworkToOutputPath>true</AppendTargetFrameworkToOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Configurations>Release;Debug;</Configurations>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+    <OutputPath>../bin</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="BindingSupport.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BindingSupport.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Eluant.dll.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <SupportedPlatform Include="windows" />
+  </ItemGroup>
+</Project>

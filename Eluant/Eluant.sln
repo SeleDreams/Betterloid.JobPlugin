@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluant", "Eluant\Eluant.csproj", "{D0D58366-0EFD-4891-991A-831002FC0F8D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluant.Tests", "Eluant.Tests\Eluant.Tests.csproj", "{B89A86A3-DA7A-4781-A1DB-3EBEAC4E5056}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0D58366-0EFD-4891-991A-831002FC0F8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D58366-0EFD-4891-991A-831002FC0F8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D58366-0EFD-4891-991A-831002FC0F8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D58366-0EFD-4891-991A-831002FC0F8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89A86A3-DA7A-4781-A1DB-3EBEAC4E5056}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89A86A3-DA7A-4781-A1DB-3EBEAC4E5056}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89A86A3-DA7A-4781-A1DB-3EBEAC4E5056}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89A86A3-DA7A-4781-A1DB-3EBEAC4E5056}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1CAB94C8-1365-4F16-9E6B-61346E2B0B3C}
+	EndGlobalSection
+EndGlobal

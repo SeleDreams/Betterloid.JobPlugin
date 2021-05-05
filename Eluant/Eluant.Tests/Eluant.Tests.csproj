@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <LangVersion>5</LangVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <OutputPath></OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+     <Configurations>Release;Debug;</Configurations>
+     <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
+     <AnalysisLevel>none</AnalysisLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Work around an issue where Rider does not detect files in the project root using the default glob -->
+    <Compile Include="**/*.cs" Exclude="$(DefaultItemExcludes)" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NUnit" Version="2.6.0.12054" />
+  </ItemGroup>
+    <ItemGroup>
+    <ProjectReference Include="..\Eluant\Eluant.csproj">
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+</Project>
