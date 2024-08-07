@@ -1,18 +1,10 @@
 ﻿using Eluant.ObjectBinding;
 using System;
-using System.Linq;
-
 #if VOCALOID6
-using Yamaha.VOCALOID;
-using Yamaha.VOCALOID.Design.UI;
-using Yamaha.VOCALOID.MusicalEditor;
 using Yamaha.VOCALOID.VSM;
-using VOCALOID = Yamaha.VOCALOID;
 #elif VOCALOID5
-using Yamaha.VOCALOID.VOCALOID5;
-using Yamaha.VOCALOID.VOCALOID5.MusicalEditor;
 using Yamaha.VOCALOID.VSM;
-using VOCALOID = Yamaha.VOCALOID.VOCALOID5;
+using System.Linq;
 #endif
 
 
@@ -26,9 +18,7 @@ namespace JobPlugin
     {
         public ProcessParam()
         {
-            MainWindow window = App.Current.MainWindow as MainWindow;
-            var xMusicalEditorDiv = window.FindName("xMusicalEditorDiv") as MusicalEditorDivision;
-            var musicalEditor = xMusicalEditorDiv.DataContext as MusicalEditorViewModel;
+            var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var activePart = musicalEditor.ActivePart;
             if (activePart == null)
             {

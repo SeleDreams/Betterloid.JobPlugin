@@ -5,7 +5,7 @@ using MsgBoxEx;
 
 namespace JobPlugin.Lua.Commands
 {
-    public class VSMessageBoxCommand
+    public static class VSMessageBoxCommand
     {
         public enum VSMessageBoxType {
             MB_OK = 0,

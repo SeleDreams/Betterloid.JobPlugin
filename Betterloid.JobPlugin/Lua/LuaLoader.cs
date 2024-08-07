@@ -15,7 +15,10 @@ namespace JobPlugin.Lua
 {
     public class LuaLoader : IDisposable
     {
-        private LuaRuntime runtime;
+        public LuaRuntime Runtime { get; private set; }
+        public string LUA => "C:/Program Files/VOCALOID5/Editor/JobPlugins/hello.lua";
+        public string LUAFolder => Path.GetDirectoryName(LUA).Replace("\\", "/");
+        public string LUAFilename => Path.GetFileName(LUA);
 
         // Required to find the lua5.1.dll present in the plugins's directory
         static void AddEnvironmentPaths(IEnumerable<string> paths)
@@ -32,25 +35,25 @@ namespace JobPlugin.Lua
             string[] paths = { Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) };
             AddEnvironmentPaths(paths);
 
-            runtime = new LuaRuntime();
+            Runtime = new LuaRuntime();
         }
 
         public void RunScript()
         {
            
             // Register the package path of the currently running lua script
-            runtime.DoString($"package.path = \"{JobPlugin.Instance.LUAFolder}/?.lua;\" .. package.path").Dispose();
+            Runtime.DoString($"package.path = \"{LUAFolder}/?.lua;\" .. package.path").Dispose();
 
             // Run the script to register its methods
-            runtime.DoString($"dofile(\"{JobPlugin.Instance.LUA}\")").Dispose();
+            Runtime.DoString($"dofile(\"{LUA}\")").Dispose();
 
 
-            PrintCommand.RegisterCommand(runtime);
+            PrintCommand.RegisterCommand(Runtime);
         }
 
         public JobManifest GetManifest()
         {
-            LuaTable manifestTable = (LuaTable)((LuaFunction)runtime.Globals["manifest"]).Call()[0];
+            LuaTable manifestTable = (LuaTable)((LuaFunction)Runtime.Globals["manifest"]).Call()[0];
             return new JobManifest(manifestTable);
         }
 
@@ -58,17 +61,23 @@ namespace JobPlugin.Lua
         {
             LuaTransparentClrObject transparentProcess = new LuaTransparentClrObject(processParam);
             LuaTransparentClrObject transparentEnv = new LuaTransparentClrObject(envParam);
-            return (LuaNumber)((LuaFunction)runtime.Globals["main"]).Call(transparentProcess, transparentEnv)[0];
+            return (LuaNumber)((LuaFunction)Runtime.Globals["main"]).Call(transparentProcess, transparentEnv)[0];
         }
 
         public void RegisterCommands()
         {
-            VSMessageBoxCommand.RegisterCommand(runtime);
+            VSMessageBoxCommand.RegisterCommand(Runtime);
+            VSGetAudioDeviceNameCommand.RegisterCommand(Runtime);
+            VSSeekToBeginNoteCommand.RegisterCommand(Runtime);
+            VSGetNextNoteCommand.RegisterCommand(Runtime);
+            VSUpdateNoteCommand.RegisterCommand(Runtime);
+            VSInsertNoteCommand.RegisterCommand(Runtime);
+            VSRemoveNoteCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()
         {
-            runtime.Dispose();
+            Runtime.Dispose();
         }
     }
 }

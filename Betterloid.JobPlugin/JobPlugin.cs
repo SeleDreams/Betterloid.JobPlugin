@@ -3,9 +3,6 @@ using System.IO;
 using JobPlugin.Lua;
 using Eluant;
 using System.Diagnostics;
-
-
-
 #if VOCALOID6
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.MusicalEditor;
@@ -25,12 +22,30 @@ namespace JobPlugin
         public static JobPlugin Instance;
         public LuaLoader Lua { get; private set; }
         public JobManifest Manifest { get; set; }
-        public string LUA => "C:/Program Files/VOCALOID5/Editor/JobPlugins/hello.lua";
-        public string LUAFolder => Path.GetDirectoryName(LUA).Replace("\\", "/");
-        public string LUAFilename => Path.GetFileName(LUA);
+        public MusicalEditorViewModel MusicalEditor { get; private set; }
+        public ulong CurrentNoteId { get; set; }
+        public bool Modified { get; set; }
+
+
+        private void Error()
+        {
+            if (Modified)
+            {
+#if VOCALOID5
+                MusicalEditor.Sequence.Undo();
+#elif VOCALOID6
+                MusicalEditor.Sequence.VSMSequence.Undo();
+#endif
+            }
+            MessageBoxDeliverer.GeneralError("The job plugin terminated with an error!");
+        }
+
         public void Startup()
         {
             Instance = this;
+            MainWindow window = App.Current.MainWindow as MainWindow;
+            var xMusicalEditorDiv = window.FindName("xMusicalEditorDiv") as MusicalEditorDivision;
+            MusicalEditor = xMusicalEditorDiv.DataContext as MusicalEditorViewModel;
             try
             {
                 using (Lua = new LuaLoader())
@@ -39,16 +54,26 @@ namespace JobPlugin
                     Manifest = Lua.GetManifest();
                     Lua.RegisterCommands();
                     ProcessParam processParam = new ProcessParam();
-                    EnvParam envParam = new EnvParam { ApiVersion = "3.0.1.0", ScriptDir = LUAFolder, ScriptName = LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
-                    int result = (int)Lua.Main(processParam, envParam);
+                    EnvParam envParam = new EnvParam { ApiVersion = "3.0.1.0", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
+                    int result = 0;
+                    var part = MusicalEditor.ActivePart ?? throw new NoActivePartException();
+                    using (Transaction transaction = new Transaction(part.Sequence)) // This is important, without using a transaction your modifications won't be applied immediately
+                    {
+                        result = (int)Lua.Main(processParam, envParam);
+                    }
+                    if (result > 0)
+                    {
+                        Error();
+                    }
+
                 }
             }
             catch (LuaException ex)
             {
-                MessageBoxDeliverer.GeneralError("An error occurred within the job plugin !");
+                Error();
                 Debug.WriteLine($"{ex}");
             }
-            catch (NoActivePartException ex)
+            catch (NoActivePartException)
             {
                 MessageBoxDeliverer.GeneralError("There is no active part ! The job plugin cannot run.");
             }
