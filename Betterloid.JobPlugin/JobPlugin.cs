@@ -6,6 +6,8 @@ using VSDialog;
 using System.Diagnostics;
 using System.Collections.Generic;
 using JobPlugin.Lua.Types;
+using System.Globalization;
+
 
 
 #if VOCALOID6
@@ -55,6 +57,7 @@ namespace JobPlugin
             VSDialog.Owner = window;
             var xMusicalEditorDiv = window.FindName("xMusicalEditorDiv") as MusicalEditorDivision;
             MusicalEditor = xMusicalEditorDiv.DataContext as MusicalEditorViewModel;
+            string previous = Directory.GetCurrentDirectory();
             try
             {
                 using (Lua = new LuaLoader())
@@ -66,6 +69,8 @@ namespace JobPlugin
                     EnvParam envParam = new EnvParam { ApiVersion = "3.0.1.0", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
                     int result = 0;
                     var part = MusicalEditor.ActivePart ?? throw new NoActivePartException();
+                    
+                    Directory.SetCurrentDirectory(Lua.LUAFolder);
                     using (Transaction transaction = new Transaction(part.Sequence)) // This is important, without using a transaction your modifications won't be applied immediately
                     {
                         result = (int)Lua.Main(processParam, envParam);
@@ -86,6 +91,7 @@ namespace JobPlugin
             {
                 MessageBoxDeliverer.GeneralError("There is no active part ! The job plugin cannot run.");
             }
+            Directory.SetCurrentDirectory(previous);
         }
     }
 }

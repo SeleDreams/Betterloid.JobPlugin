@@ -2,6 +2,8 @@
 using Eluant;
 using Yamaha.VOCALOID.VSM;
 using JobPlugin.Lua.Types;
+using Yamaha.VOCALOID.VDM;
+
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -19,7 +21,8 @@ namespace JobPlugin.Lua.Commands
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 #if VOCALOID6
-            var note = part.InsertNote(new VSMRelTick(luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), new VSMNoteExpression(luaNote.Accent,luaNote.Decay,luaNote.BendDepth,luaNote.BendLength,luaNote.Opening,luaNote.RisePort > 0, luaNote.FallPort > 0), part.GetDefaultAiNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true, part.LangID);
+            VoiceBank vb = part.VoiceBank();
+            var note = part.InsertNote(new VSMRelTick(luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), new VSMNoteExpression(luaNote.Accent,luaNote.Decay,luaNote.BendDepth,luaNote.BendLength,luaNote.Opening,luaNote.RisePort > 0, luaNote.FallPort > 0), part.GetDefaultAiNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true, vb.NativeLangID);
 #elif VOCALOID5
             var note = part.InsertNote(new VSMRelTick((int)luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), new VSMNoteExpression(luaNote.Accent,luaNote.Decay,luaNote.BendDepth,luaNote.BendLength,luaNote.Opening,luaNote.RisePort > 0,luaNote.FallPort > 0), luaNote.Lyric, luaNote.Phonemes, true);
 #endif

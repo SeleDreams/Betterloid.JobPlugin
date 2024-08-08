@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -111,7 +112,10 @@ namespace VSDialog
                 Name = fieldName,
                 TextWrapping = TextWrapping.Wrap,
                 Text = initialValue
+                
             };
+            InputMethod.SetIsInputMethodEnabled(textBox, true);
+            
             AddField(labelText, textBox);
         }
 

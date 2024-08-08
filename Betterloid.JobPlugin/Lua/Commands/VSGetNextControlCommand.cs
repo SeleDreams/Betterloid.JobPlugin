@@ -15,11 +15,15 @@ namespace JobPlugin.Lua.Commands
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
             VSMControllerType vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            if (!JobPlugin.Instance.CurrentControlId.ContainsKey(controlType))
+            {
+                JobPlugin.Instance.CurrentControlId[controlType] = 0;
+            }
             ulong id = JobPlugin.Instance.CurrentControlId[controlType];
             var controller = part.GetController(vsmControlType, id);
             if (controller == null)
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance },true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) },true);
             }
             else
             {

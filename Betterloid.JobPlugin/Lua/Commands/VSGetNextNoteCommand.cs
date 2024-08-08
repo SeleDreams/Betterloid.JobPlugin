@@ -28,11 +28,11 @@ namespace JobPlugin.Lua.Commands
                 // Update the current position
                 JobPlugin.Instance.CurrentNoteId++;
 
-                returnValue = new LuaVararg(new LuaValue[]{ 1, luaNote.ToLuaTable() },true);
+                returnValue = new LuaVararg(new LuaValue[]{ new LuaNumber(1), luaNote.ToLuaTable() },true);
             }
             else
             {
-                returnValue = new LuaVararg(new LuaValue[] { 0, luaNote.ToLuaTable() }, true);
+                returnValue = new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) }, true);
             }
             return returnValue;
         }

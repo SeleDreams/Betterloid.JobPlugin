@@ -83,7 +83,7 @@ namespace JobPlugin.Lua.Types
         {
             PosTick = (long)table["posTick"].ToNumber();
             Value = (int)table["value"].ToNumber();
-            Type = (VSControlType)Enum.Parse(typeof(VSControlType), table["value"].ToString());
+            Type = (VSControlType)Enum.Parse(typeof(VSControlType), table["type"].ToString());
             if (table.ContainsKey("objID"))
             {
                 ObjID = (ulong)table["objID"].ToNumber();
@@ -95,7 +95,8 @@ namespace JobPlugin.Lua.Types
             LuaTable table = JobPlugin.Instance.Lua.Runtime.CreateTable();
             table["posTick"] = new LuaNumber(PosTick);
             table["value"] = new LuaNumber(Value);
-            table["type"] = new LuaString(Type.ToString());
+            string stype = Type.ToString();
+            table["type"] = new LuaString(stype);
             table["objID"] = new LuaNumber(ObjID);
             return table;
         }

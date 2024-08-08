@@ -16,7 +16,7 @@ namespace JobPlugin.Lua
     public class LuaLoader : IDisposable
     {
         public LuaRuntime Runtime { get; private set; }
-        public string LUA => "C:/Program Files/VOCALOID5/Editor/JobPlugins/hello.lua";
+        public string LUA => "C:/Program Files/VOCALOID5/Editor/JobPlugins/Expressive_vibrato.lua";
         public string LUAFolder => Path.GetDirectoryName(LUA).Replace("\\", "/");
         public string LUAFilename => Path.GetFileName(LUA);
 
@@ -32,7 +32,7 @@ namespace JobPlugin.Lua
 
         public LuaLoader()
         {
-            string[] paths = { Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) };
+            string[] paths = { Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ,LUAFolder};
             AddEnvironmentPaths(paths);
 
             Runtime = new LuaRuntime();
@@ -47,7 +47,7 @@ namespace JobPlugin.Lua
             // Run the script to register its methods
             Runtime.DoString($"dofile(\"{LUA}\")").Dispose();
 
-
+            ExecuteCommand.RegisterCommand(Runtime);
             PrintCommand.RegisterCommand(Runtime);
         }
 
@@ -61,7 +61,16 @@ namespace JobPlugin.Lua
         {
             LuaTransparentClrObject transparentProcess = new LuaTransparentClrObject(processParam);
             LuaTransparentClrObject transparentEnv = new LuaTransparentClrObject(envParam);
-            return (LuaNumber)((LuaFunction)Runtime.Globals["main"]).Call(transparentProcess, transparentEnv)[0];
+            var returnValue = ((LuaFunction)Runtime.Globals["main"]).Call(transparentProcess, transparentEnv);
+            if (returnValue.Count > 0)
+            {
+                return (LuaNumber)returnValue[0];
+            }
+            else
+            {
+                return new LuaNumber(0);
+            }
+            
         }
 
         public void RegisterCommands()

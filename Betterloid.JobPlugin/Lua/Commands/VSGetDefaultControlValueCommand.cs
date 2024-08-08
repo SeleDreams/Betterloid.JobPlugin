@@ -22,7 +22,7 @@ namespace JobPlugin.Lua.Commands
             VSControlType controlType;
             if (!Enum.TryParse(type, out controlType))
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) }, true);
             }
             
             var controlParameterType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);

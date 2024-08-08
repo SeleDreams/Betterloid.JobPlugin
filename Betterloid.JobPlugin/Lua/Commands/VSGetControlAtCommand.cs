@@ -3,7 +3,11 @@ using JobPlugin.Lua.Types;
 using System;
 using System.Diagnostics;
 using Yamaha.VOCALOID.VSM;
-
+#if VOCALOID5
+using Yamaha.VOCALOID.VOCALOID5.MusicalEditor;
+#elif VOCALOID6
+using Yamaha.VOCALOID.MusicalEditor;
+#endif
 namespace JobPlugin.Lua.Commands
 {
     public static class VSGetControlAtCommand
@@ -14,15 +18,23 @@ namespace JobPlugin.Lua.Commands
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
             VSMControllerType vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            int value;
             var controller = part.GetController(vsmControlType, new VSMRelTick(posTick), true, false);
             if (controller == null)
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, true);
+                var controlParameterType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);
+#if VOCALOID6
+                var defaultValue = MusicalEditorViewModel.GetDefaultControllerValue(controlParameterType);
+#elif VOCALOID5
+            var defaultValue = JobPlugin.Instance.MusicalEditor.GetDefaultControllerValue(controlParameterType);
+#endif
+                value = defaultValue;
             }
             else
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(controller.Value) }, true);
+                value = controller.Value;
             }
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(value) }, true);
         }
 
         public static void RegisterCommand(LuaRuntime lua)
