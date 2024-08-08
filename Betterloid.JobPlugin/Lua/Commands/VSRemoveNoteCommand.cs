@@ -1,6 +1,8 @@
 ﻿using System;
 using Eluant;
 using Yamaha.VOCALOID.VSM;
+using JobPlugin.Lua.Types;
+
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
 #elif VOCALOID6

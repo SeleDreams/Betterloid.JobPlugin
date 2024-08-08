@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JobPlugin.Lua
+namespace JobPlugin.Lua.Types
 {
     public class VSFlexDialogField
     {

@@ -13,7 +13,7 @@ namespace JobPlugin.Lua.Commands
             }
             catch
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaString("") }, true );
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, true );
             }
         }
 

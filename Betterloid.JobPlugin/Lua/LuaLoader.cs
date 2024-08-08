@@ -71,11 +71,16 @@ namespace JobPlugin.Lua
             VSGetAudioDeviceNameCommand.RegisterCommand(Runtime);
             
             VSSeekToBeginNoteCommand.RegisterCommand(Runtime);
+
             VSGetNextNoteCommand.RegisterCommand(Runtime);
+            VSGetNextNoteExCommand.RegisterCommand(Runtime);
             
             VSUpdateNoteCommand.RegisterCommand(Runtime);
             VSInsertNoteCommand.RegisterCommand(Runtime);
             VSRemoveNoteCommand.RegisterCommand(Runtime);
+
+            VSUpdateNoteExCommand.RegisterCommand(Runtime);
+            VSInsertNoteExCommand.RegisterCommand(Runtime);
 
             VSDlgSetDialogTitleCommand.RegisterCommand(Runtime);
             VSDlgAddFieldCommand.RegisterCommand(Runtime);
@@ -85,6 +90,16 @@ namespace JobPlugin.Lua
             VSDlgGetFloatValueCommand.RegisterCommand(Runtime);
             VSDlgGetIntValueCommand.RegisterCommand(Runtime);
             VSDlgGetStringValueCommand.RegisterCommand(Runtime);
+
+            VSGetControlAtCommand.RegisterCommand(Runtime);
+            VSUpdateControlAtCommand.RegisterCommand(Runtime);
+
+            VSSeekToBeginControlCommand.RegisterCommand(Runtime);
+            VSGetNextControlCommand.RegisterCommand(Runtime);
+            VSUpdateControlCommand.RegisterCommand(Runtime);
+            VSInsertControlCommand.RegisterCommand(Runtime);
+            VSRemoveControlCommand.RegisterCommand(Runtime);
+            VSGetDefaultControlValueCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

@@ -10,11 +10,11 @@ using Yamaha.VOCALOID;
 #endif
 namespace JobPlugin.Lua.Commands
 {
-    public class VSUpdateNoteCommand
+    public class VSUpdateNoteExCommand
     {
-        public static int VSUpdateNote(LuaTable noteTable)
+        public static int VSUpdateNoteEx(LuaTable noteTable)
         {
-            VSLuaNote luaNote = new VSLuaNote(noteTable);
+            VSLuaNoteEx luaNote = new VSLuaNoteEx(noteTable);
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 
@@ -38,6 +38,8 @@ namespace JobPlugin.Lua.Commands
                     note.SetDuration((int)luaNote.DurTick);
                     part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
 #endif
+                note.SetNoteExpression(new VSMNoteExpression(luaNote.Accent, luaNote.Decay, luaNote.BendDepth, luaNote.BendLength, luaNote.Opening, luaNote.RisePort > 0, luaNote.FallPort > 0));
+
                 JobPlugin.Instance.Modified = true;
                 returnValue = 1;
             }
@@ -50,9 +52,9 @@ namespace JobPlugin.Lua.Commands
 
         public static void RegisterCommand(LuaRuntime lua)
         {
-            using (var fn = lua.CreateFunctionFromDelegate(new Func<LuaTable,int>(VSUpdateNote)))
+            using (var fn = lua.CreateFunctionFromDelegate(new Func<LuaTable,int>(VSUpdateNoteEx)))
             {
-                lua.Globals["VSUpdateNote"] = fn;
+                lua.Globals["VSUpdateNoteEx"] = fn;
             }
         }
     }

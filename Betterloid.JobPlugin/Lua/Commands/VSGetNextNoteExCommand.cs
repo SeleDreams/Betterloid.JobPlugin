@@ -4,11 +4,11 @@ using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua.Commands
 {
-    public class VSGetNextNoteCommand
+    public class VSGetNextNoteExCommand
     {
-        public static LuaVararg VSGetNextNote()
+        public static LuaVararg VSGetNextNoteEx()
         {
-            VSLuaNote luaNote = new VSLuaNote();
+            VSLuaNoteEx luaNote = new VSLuaNoteEx();
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
             ulong noteId = JobPlugin.Instance.CurrentNoteId;
@@ -25,6 +25,21 @@ namespace JobPlugin.Lua.Commands
                 luaNote.DurTick = note.Duration.Tick;
                 luaNote.PosTick = note.RelPosition.Tick;
 
+                var expression = note.GetNoteExpression();
+                luaNote.Accent = expression.Accent;
+                luaNote.BendDepth = expression.BendDepth;
+                luaNote.FallPort = expression.FallPort ? 1 : 0;
+                luaNote.BendLength = expression.BendLength;
+                luaNote.Decay = expression.Decay;
+                luaNote.Opening = expression.Opening;
+                luaNote.RisePort = expression.RisePort ? 1 : 0;
+#if VOCALOID6
+                luaNote.VibratoLength = note.VibratoDuration.Tick;
+#elif VOCALOID5
+                luaNote.VibratoLength = note.VibratoDuration;
+#endif
+                luaNote.VibratoType = (int)note.VibratoType;
+
                 // Update the current position
                 JobPlugin.Instance.CurrentNoteId++;
 
@@ -32,16 +47,16 @@ namespace JobPlugin.Lua.Commands
             }
             else
             {
-                returnValue = new LuaVararg(new LuaValue[] { 0, luaNote.ToLuaTable() }, true);
+                returnValue = new LuaVararg(new LuaValue[] { 0, LuaNil.Instance }, true);
             }
             return returnValue;
         }
 
         public static void RegisterCommand(LuaRuntime lua)
         {
-            using (var fn = lua.CreateFunctionFromDelegate(new Func<LuaVararg>(VSGetNextNote)))
+            using (var fn = lua.CreateFunctionFromDelegate(new Func<LuaVararg>(VSGetNextNoteEx)))
             {
-                lua.Globals["VSGetNextNote"] = fn;
+                lua.Globals["VSGetNextNoteEx"] = fn;
             }
         }
     }

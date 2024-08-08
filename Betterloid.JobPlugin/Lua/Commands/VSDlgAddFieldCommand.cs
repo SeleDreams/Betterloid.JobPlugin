@@ -1,5 +1,6 @@
 ﻿using System;
 using Eluant;
+using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -24,7 +25,8 @@ namespace JobPlugin.Lua.Commands
 
         private static void AddBoolField(VSFlexDialogField field)
         {
-            bool initialValue = bool.Parse(field.InitialVal);
+            int parsedVal = int.Parse(field.InitialVal);
+            bool initialValue = parsedVal == 1;
             JobPlugin.Instance.VSDialog.AddBooleanField(field.Caption, field.Name, initialValue);
         }
 

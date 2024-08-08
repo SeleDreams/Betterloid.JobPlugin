@@ -7,7 +7,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JobPlugin.Lua
+namespace JobPlugin.Lua.Types
 {
     // Note event type.
     public class VSLuaNote
@@ -31,7 +31,7 @@ namespace JobPlugin.Lua
             }
         }
 
-        public LuaTable ToLuaTable()
+        public virtual LuaTable ToLuaTable()
         {
             LuaTable table = JobPlugin.Instance.Lua.Runtime.CreateTable();
             table["objID"] = new LuaNumber(ObjID);

@@ -1,6 +1,8 @@
 ﻿using System;
 using Eluant;
 using Yamaha.VOCALOID.VSM;
+using JobPlugin.Lua.Types;
+
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
 #elif VOCALOID6
@@ -16,9 +18,9 @@ namespace JobPlugin.Lua.Commands
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 #if VOCALOID6
-            var note = part.InsertNote(new VSMRelTick(luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), new VSMNoteExpression(), new VSMAiNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true, part.LangID);
+            var note = part.InsertNote(new VSMRelTick(luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), part.GetDefaultNoteExpression(), part.GetDefaultAiNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true, part.LangID);
 #elif VOCALOID5
-            var note = part.InsertNote(new VSMRelTick((int)luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), new VSMNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true);
+            var note = part.InsertNote(new VSMRelTick((int)luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), part.GetDefaultNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true);
 #endif
             if (note == null)
             {
