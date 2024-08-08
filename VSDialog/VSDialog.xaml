@@ -1,0 +1,35 @@
+﻿<Window x:Class="VSDialog.VSDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VSDialog"
+        mc:Ignorable="d"
+        Title="MainWindow" ResizeMode="NoResize" Width="700" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" SizeToContent="WidthAndHeight" >
+    <Grid x:Name="xMainGrid" Margin="15" >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0">
+            <Grid x:Name="xFieldGrid" >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto"/>
+                    <ColumnDefinition MinWidth="200"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+        </ScrollViewer>
+        <Grid x:Name="xButtonGrid" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="300">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Confirm" Grid.Column="0"  Height="25" Margin="4,4,4,4" Click="ConfirmButton_Click"/>
+            <Button Content="Cancel" Grid.Column="1"  Height="25" Margin="4,4,4,4" Click="CancelButton_Click" />
+        </Grid>
+    </Grid>
+</Window>

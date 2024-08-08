@@ -67,12 +67,24 @@ namespace JobPlugin.Lua
         public void RegisterCommands()
         {
             VSMessageBoxCommand.RegisterCommand(Runtime);
+            
             VSGetAudioDeviceNameCommand.RegisterCommand(Runtime);
+            
             VSSeekToBeginNoteCommand.RegisterCommand(Runtime);
             VSGetNextNoteCommand.RegisterCommand(Runtime);
+            
             VSUpdateNoteCommand.RegisterCommand(Runtime);
             VSInsertNoteCommand.RegisterCommand(Runtime);
             VSRemoveNoteCommand.RegisterCommand(Runtime);
+
+            VSDlgSetDialogTitleCommand.RegisterCommand(Runtime);
+            VSDlgAddFieldCommand.RegisterCommand(Runtime);
+            VSDlgDoModalCommand.RegisterCommand(Runtime);
+
+            VSDlgGetBoolValueCommand.RegisterCommand(Runtime);
+            VSDlgGetFloatValueCommand.RegisterCommand(Runtime);
+            VSDlgGetIntValueCommand.RegisterCommand(Runtime);
+            VSDlgGetStringValueCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

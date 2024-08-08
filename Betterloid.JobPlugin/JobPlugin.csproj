@@ -44,9 +44,15 @@
     <Copy SourceFiles="bin\$(TargetFramework)\Eluant.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\Eluant.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\Eluant.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\Eluant.dll" />
   </Target>
+  
   <Target Name="CopyMessageBoxDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net6.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\WpfMessageBoxEx.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\WpfMessageBoxEx.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\WpfMessageBoxEx.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\WpfMessageBoxEx.dll" />
+  </Target>
+
+  <Target Name="CopyVSDialogDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net6.0-windows'">
+    <Copy SourceFiles="bin\$(TargetFramework)\VSDialog.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\VSDialog.dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\VSDialog.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\VSDialog.dll" />
   </Target>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -54,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Eluant\Eluant\Eluant.csproj" />
+    <ProjectReference Include="..\VSDialog\VSDialog.csproj" />
     <ProjectReference Include="..\WpfMessageBoxEx\WpfMessageBoxEx.csproj" />
   </ItemGroup>
   <ItemGroup>

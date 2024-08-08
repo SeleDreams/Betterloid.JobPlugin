@@ -2,6 +2,7 @@
 using System.IO;
 using JobPlugin.Lua;
 using Eluant;
+using VSDialog;
 using System.Diagnostics;
 #if VOCALOID6
 using Yamaha.VOCALOID;
@@ -22,6 +23,7 @@ namespace JobPlugin
         public static JobPlugin Instance;
         public LuaLoader Lua { get; private set; }
         public JobManifest Manifest { get; set; }
+        public VSDialog.VSDialog VSDialog { get; set; }
         public MusicalEditorViewModel MusicalEditor { get; private set; }
         public ulong CurrentNoteId { get; set; }
         public bool Modified { get; set; }
@@ -43,6 +45,7 @@ namespace JobPlugin
         public void Startup()
         {
             Instance = this;
+            VSDialog = new VSDialog.VSDialog();
             MainWindow window = App.Current.MainWindow as MainWindow;
             var xMusicalEditorDiv = window.FindName("xMusicalEditorDiv") as MusicalEditorDivision;
             MusicalEditor = xMusicalEditorDiv.DataContext as MusicalEditorViewModel;

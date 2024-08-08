@@ -37,7 +37,9 @@ Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "VOCALOID5", "VOCALOID5\VOCA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Eluant", "Eluant\Eluant\Eluant.csproj", "{507B09B9-130A-42F0-8A38-CAE401C06FB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfMessageBoxEx", "WpfMessageBoxEx\WpfMessageBoxEx.csproj", "{F00F9C8D-4FAD-4ACA-BD40-75CEB10C6760}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WpfMessageBoxEx", "WpfMessageBoxEx\WpfMessageBoxEx.csproj", "{F00F9C8D-4FAD-4ACA-BD40-75CEB10C6760}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VSDialog", "VSDialog\VSDialog.csproj", "{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,14 @@ Global
 		{F00F9C8D-4FAD-4ACA-BD40-75CEB10C6760}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F00F9C8D-4FAD-4ACA-BD40-75CEB10C6760}.Release|x64.ActiveCfg = Release|Any CPU
 		{F00F9C8D-4FAD-4ACA-BD40-75CEB10C6760}.Release|x64.Build.0 = Release|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Debug|x64.Build.0 = Debug|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Release|x64.ActiveCfg = Release|Any CPU
+		{A07EA98B-1F7A-4AE7-BFEB-BB8078A8004B}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
