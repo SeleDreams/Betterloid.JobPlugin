@@ -23,8 +23,17 @@ namespace JobPlugin.Lua.Commands
                 tick = (int)firstNote.RelPosition.Tick;
             }
             luaPart.PosTick = part.AbsPosition.Tick;
-            luaPart.DurTick = part.RenderableNoteDuration(tick);
-            luaPart.PlayTime = part.Duration.Tick;
+            var info = new ProcessParam();
+            luaPart.DurTick = part.Duration.Tick;
+            if (part.Notes.Count > 0)
+            {
+                var lastNote = part.Notes.Last();
+                luaPart.PlayTime = (lastNote.RelPosition.Tick + lastNote.Duration.Tick) - firstNote.RelPosition.Tick;
+            }
+            else
+            {
+                luaPart.PlayTime = 0;
+            }
             luaPart.Name = part.Name;
             luaPart.Comment = "";
             return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaPart.ToTable() }, true);
