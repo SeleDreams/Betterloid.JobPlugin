@@ -4,6 +4,7 @@ namespace JobPlugin.Lua.Types
 {
     public class VSLuaMusicalSinger
     {
+        public VSLuaMusicalSinger() { }
         public VSLuaMusicalSinger(LuaTable table)
         {
             VirtualBankSelect = (int)table["vBS"].ToNumber();

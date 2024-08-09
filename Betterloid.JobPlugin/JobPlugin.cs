@@ -82,9 +82,7 @@ namespace JobPlugin
                         }
                     }
                 using (Lua = new LuaLoader(luaPath.Replace("\\","/")))
-
                 {
-
                     Lua.RunScript();
                     Manifest = Lua.GetManifest();
                     Lua.RegisterCommands();
@@ -105,14 +103,14 @@ namespace JobPlugin
 
                 }
             }
-            catch (LuaException ex)
-            {
-                Error();
-                Debug.WriteLine($"{ex}");
-            }
             catch (NoActivePartException)
             {
                 MessageBoxDeliverer.GeneralError("There is no active part ! The job plugin cannot run.");
+            }
+            catch (Exception ex)
+            {
+                Error();
+                Debug.WriteLine($"{ex}");
             }
             Directory.SetCurrentDirectory(previous);
         }

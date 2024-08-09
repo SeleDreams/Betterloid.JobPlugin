@@ -115,6 +115,8 @@ namespace JobPlugin.Lua
 
             VSGetMusicalPartCommand.RegisterCommand(Runtime);
             VSUpdateMusicalPartCommand.RegisterCommand(Runtime);
+
+            VSGetMusicalPartSingerCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()
