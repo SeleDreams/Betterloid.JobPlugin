@@ -17,6 +17,10 @@ namespace JobPlugin.Lua.Commands
         public static int VSInsertNote(LuaTable noteTable)
         {
             VSLuaNote luaNote = new VSLuaNote(noteTable);
+            if (string.IsNullOrEmpty(luaNote.Phonemes) || luaNote.Phonemes == "nil")
+            {
+                return 0;
+            }
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 

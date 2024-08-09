@@ -8,7 +8,8 @@ namespace JobPlugin.Lua.Commands
     {
         public static void VSSeekToBeginNote()
         {
-            JobPlugin.Instance.CurrentNoteId = 0;
+            var part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
+            JobPlugin.Instance.CurrentNote = null;
         }
 
         public static void RegisterCommand(LuaRuntime lua)

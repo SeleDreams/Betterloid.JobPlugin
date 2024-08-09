@@ -6,7 +6,7 @@ using Yamaha.VOCALOID;
 #if VOCALOID6
 using Yamaha.VOCALOID.MusicalEditor;
 #elif VOCALOID5
-using Yamaha.VOCALOID.VOCALOID5.MusicalEditor;
+using Yamaha.VOCALOID.VOCALOID5;
 #endif
 using Yamaha.VOCALOID.VSM;
 
@@ -24,7 +24,16 @@ namespace JobPlugin.Lua.Commands
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) }, true);
             }
-            
+            ControlParameterTypeEnum vsmControlType;
+            try
+            {
+                vsmControlType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);
+            }
+            catch
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(0) }, true);
+            }
+
             var controlParameterType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);
 #if VOCALOID6
             var defaultValue  = MusicalEditorViewModel.GetDefaultControllerValue(controlParameterType);

@@ -2,14 +2,13 @@
 using System.IO;
 using JobPlugin.Lua;
 using Eluant;
-using VSDialog;
+using System;
 using System.Diagnostics;
 using System.Collections.Generic;
 using JobPlugin.Lua.Types;
 using System.Globalization;
-
-
-
+using Microsoft.Win32;
+using System.Windows.Forms;
 #if VOCALOID6
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.MusicalEditor;
@@ -31,8 +30,13 @@ namespace JobPlugin
         public JobManifest Manifest { get; set; }
         public VSDialog.VSDialog VSDialog { get; set; }
         public MusicalEditorViewModel MusicalEditor { get; private set; }
-        public ulong CurrentNoteId { get; set; }
-        public Dictionary<VSControlType, ulong> CurrentControlId { get; set; } = new Dictionary<VSControlType, ulong>();
+        // The current note, will be returned in the next VSGetNextNote call
+        public WIVSMNote CurrentNote { get; set; }
+        // The current control, will be returned in the next VSGetNextControl call
+        public Dictionary<VSControlType, WIVSMMidiController> CurrentControl { get; set; } = new Dictionary<VSControlType, WIVSMMidiController>();
+        // For some reason, the vocaloid api does not give direct access to the controllers list compared to notes. As such it is harder to keep track of their IDs, that's why we cache references to them in this list when VSSeekToBeginControlCommand is called
+        public Dictionary<VSControlType, List<WIVSMMidiController>> Controllers { get; set; } = new Dictionary<VSControlType, List<WIVSMMidiController>>();
+
         public bool Modified { get; set; }
 
 
@@ -60,8 +64,27 @@ namespace JobPlugin
             string previous = Directory.GetCurrentDirectory();
             try
             {
-                using (Lua = new LuaLoader())
+                string luaPath = "";
+                    using (var openFileDialog = new System.Windows.Forms.OpenFileDialog())
+                    {
+                        openFileDialog.Filter = "lua files (*.lua)|*.lua";
+                        openFileDialog.FilterIndex = 2;
+                        openFileDialog.RestoreDirectory = true;
+
+                        if (openFileDialog.ShowDialog() == DialogResult.OK)
+                        {
+                            //Get the path of specified file
+                            luaPath = openFileDialog.FileName;
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                using (Lua = new LuaLoader(luaPath.Replace("\\","/")))
+
                 {
+
                     Lua.RunScript();
                     Manifest = Lua.GetManifest();
                     Lua.RegisterCommands();
@@ -69,7 +92,7 @@ namespace JobPlugin
                     EnvParam envParam = new EnvParam { ApiVersion = "3.0.1.0", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
                     int result = 0;
                     var part = MusicalEditor.ActivePart ?? throw new NoActivePartException();
-                    
+                    CurrentNote = part.GetNote(0);
                     Directory.SetCurrentDirectory(Lua.LUAFolder);
                     using (Transaction transaction = new Transaction(part.Sequence)) // This is important, without using a transaction your modifications won't be applied immediately
                     {

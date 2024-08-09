@@ -17,7 +17,15 @@ namespace JobPlugin.Lua.Commands
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
-            VSMControllerType vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            VSMControllerType vsmControlType;
+            try
+            {
+                vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            }
+            catch
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(1),new VSLuaControl().ToTable()},true);
+            }
             int value;
             var controller = part.GetController(vsmControlType, new VSMRelTick(posTick), true, false);
             if (controller == null)

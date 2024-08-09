@@ -19,7 +19,8 @@ namespace JobPlugin.Lua.Types
         GEN, // Gender factor
         PIT, // Pitch bend
         PBS, // Pitch bend sensitivity
-        POR, // Portamento timing
+        POR, // Portamento timing,
+        XSY, // Cross Synthesis
         GWL // Growl
     }
     public class VSLuaControl
@@ -83,7 +84,8 @@ namespace JobPlugin.Lua.Types
         {
             PosTick = (long)table["posTick"].ToNumber();
             Value = (int)table["value"].ToNumber();
-            Type = (VSControlType)Enum.Parse(typeof(VSControlType), table["type"].ToString());
+            string type = table["type"].ToString();
+            Type = (VSControlType)Enum.Parse(typeof(VSControlType), type);
             if (table.ContainsKey("objID"))
             {
                 ObjID = (ulong)table["objID"].ToNumber();

@@ -2,6 +2,8 @@
 using JobPlugin.Lua.Types;
 using System;
 using System.Diagnostics;
+using System.Linq;
+using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
@@ -14,23 +16,26 @@ namespace JobPlugin.Lua.Commands
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
-            VSMControllerType vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
-            if (!JobPlugin.Instance.CurrentControlId.ContainsKey(controlType))
+            VSMControllerType vsmControlType;
+            try
             {
-                JobPlugin.Instance.CurrentControlId[controlType] = 0;
+                vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
             }
-            ulong id = JobPlugin.Instance.CurrentControlId[controlType];
-            var controller = part.GetController(vsmControlType, id);
-            if (controller == null)
+            catch
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) },true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
             }
-            else
+
+            var previousController = JobPlugin.Instance.CurrentControl[controlType];
+            var controller = JobPlugin.Instance.CurrentControl[controlType].Next ?? JobPlugin.Instance.Controllers[controlType].Last();
+            JobPlugin.Instance.CurrentControl[controlType] = controller;
+            VSLuaControl luaControl = new VSLuaControl(controller.RelPosition.Tick, controller.Value, controlType, (ulong)JobPlugin.Instance.Controllers[controlType].IndexOf(controller));
+            if (previousController != null && previousController.Next == null)
             {
-                JobPlugin.Instance.CurrentControlId[controlType] += 1;
-                VSLuaControl luaControl = new VSLuaControl(controller.RelPosition.Tick,controller.Value,controlType,id);
-                return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaControl.ToTable() }, true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaControl.ToTable() }, true);
             }
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaControl.ToTable() }, true);
+
         }
 
         public static void RegisterCommand(LuaRuntime lua)

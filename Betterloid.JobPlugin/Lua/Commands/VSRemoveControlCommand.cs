@@ -1,6 +1,7 @@
 ﻿using Eluant;
 using JobPlugin.Lua.Types;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Yamaha.VOCALOID.VSM;
 
@@ -14,7 +15,15 @@ namespace JobPlugin.Lua.Commands
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
             VSLuaControl control = new VSLuaControl(table);
             VSControlType controlType = control.Type;
-            VSMControllerType vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            VSMControllerType vsmControlType;
+            try
+            {
+                vsmControlType = VSLuaControl.VSControlTypeToVSMControllerType(controlType);
+            }
+            catch
+            {
+                return 1;
+            }
             var controller = part.GetController(vsmControlType, control.ObjID);
             if (controller == null)
             {
@@ -23,6 +32,12 @@ namespace JobPlugin.Lua.Commands
             else
             {
                 part.RemoveController(controller);
+                List<WIVSMMidiController> controllers = new List<WIVSMMidiController>();
+                for (ulong i = 0; i < part.GetNumController(vsmControlType); i++)
+                {
+                    controllers.Add(part.GetController(vsmControlType, i));
+                }
+                JobPlugin.Instance.Controllers[controlType] = controllers;
                 JobPlugin.Instance.Modified = true;
                 return 1;
             }

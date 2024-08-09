@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Eluant;
 using JobPlugin.Lua.Types;
+using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -11,30 +14,32 @@ namespace JobPlugin.Lua.Commands
             VSLuaNote luaNote = new VSLuaNote();
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
-            ulong noteId = JobPlugin.Instance.CurrentNoteId;
-            LuaVararg returnValue;
-            if (noteId < part.NumNotes) // Verify that the current note is within the part
+            WIVSMNote note;
+            var previousCurrentNote = JobPlugin.Instance.CurrentNote;
+            if (JobPlugin.Instance.CurrentNote == null)
             {
-                // Populate the lua note's infos
-                var note = part.GetNote(noteId);
-                luaNote.ObjID = noteId;
-                luaNote.NoteNum = note.NoteNumber;
-                luaNote.PhonemeLock = note.IsProtected;
-                luaNote.Phonemes = note.Phonemes;
-                luaNote.Lyric = note.Lyric;
-                luaNote.DurTick = note.Duration.Tick;
-                luaNote.PosTick = note.RelPosition.Tick;
-
-                // Update the current position
-                JobPlugin.Instance.CurrentNoteId++;
-
-                returnValue = new LuaVararg(new LuaValue[]{ new LuaNumber(1), luaNote.ToLuaTable() },true);
+                JobPlugin.Instance.CurrentNote = part.Notes.First();
+                note = JobPlugin.Instance.CurrentNote;
             }
             else
             {
-                returnValue = new LuaVararg(new LuaValue[] { new LuaNumber(0), new LuaNumber(0) }, true);
+                note = JobPlugin.Instance.CurrentNote.Next ?? part.Notes.Last();
+                JobPlugin.Instance.CurrentNote = note;
             }
-            return returnValue;
+
+            luaNote.ObjID = (ulong)part.Notes.IndexOf(note);
+            luaNote.NoteNum = note.NoteNumber;
+            luaNote.PhonemeLock = note.IsProtected;
+            luaNote.Phonemes = note.Phonemes;
+            luaNote.Lyric = note.Lyric;
+            luaNote.DurTick = note.Duration.Tick;
+            luaNote.PosTick = note.RelPosition.Tick;
+            // Update the current position
+            if (previousCurrentNote != null && previousCurrentNote.Next == null)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaNote.ToLuaTable() }, true);
+            }
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaNote.ToLuaTable() }, true);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

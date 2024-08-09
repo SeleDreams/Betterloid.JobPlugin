@@ -16,9 +16,11 @@ namespace JobPlugin.Lua
     public class LuaLoader : IDisposable
     {
         public LuaRuntime Runtime { get; private set; }
-        public string LUA => "C:/Program Files/VOCALOID5/Editor/JobPlugins/Expressive_vibrato.lua";
-        public string LUAFolder => Path.GetDirectoryName(LUA).Replace("\\", "/");
-        public string LUAFilename => Path.GetFileName(LUA);
+        public string LUA { get; set; }
+        public string LUAFolder {
+            get => Path.GetDirectoryName(LUA).Replace("\\", "/");
+        }
+        public string LUAFilename { get => Path.GetFileName(LUA); }
 
         // Required to find the lua5.1.dll present in the plugins's directory
         static void AddEnvironmentPaths(IEnumerable<string> paths)
@@ -30,8 +32,9 @@ namespace JobPlugin.Lua
             Environment.SetEnvironmentVariable("PATH", newPath);
         }
 
-        public LuaLoader()
+        public LuaLoader(string luaPath)
         {
+            LUA = luaPath;
             string[] paths = { Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ,LUAFolder};
             AddEnvironmentPaths(paths);
 
@@ -109,6 +112,9 @@ namespace JobPlugin.Lua
             VSInsertControlCommand.RegisterCommand(Runtime);
             VSRemoveControlCommand.RegisterCommand(Runtime);
             VSGetDefaultControlValueCommand.RegisterCommand(Runtime);
+
+            VSGetMusicalPartCommand.RegisterCommand(Runtime);
+            VSUpdateMusicalPartCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

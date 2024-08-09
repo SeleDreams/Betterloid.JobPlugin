@@ -31,17 +31,17 @@ namespace VSDialog
                         if (element is TextBox)
                         {
                             TextBox tex = (TextBox)element;
-                            Results.Add(tex.Name, tex.Text);
+                            Results[tex.Name] = tex.Text;
                         }
                         else if (element is CheckBox)
                         {
                             CheckBox check = (CheckBox)element;
-                            Results.Add(check.Name, check.IsChecked ?? false);
+                            Results[check.Name] = check.IsChecked ?? false;
                         }
                         else if (element is ComboBox)
                         {
                             ComboBox combo = (ComboBox)element;
-                            Results.Add(combo.Name, combo.Text);
+                            Results[combo.Name] = combo.Text;
                         }
                         
                     }

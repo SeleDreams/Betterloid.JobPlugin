@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using Eluant;
 using JobPlugin.Lua.Types;
+using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -11,21 +13,20 @@ namespace JobPlugin.Lua.Commands
             VSLuaNoteEx luaNote = new VSLuaNoteEx();
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
-            ulong noteId = JobPlugin.Instance.CurrentNoteId;
-            var note = part.GetNote(noteId);
-            int returnCode = 0;
-            LuaVararg returnValue;
-            if (note != null) // Verify that the current note is within the part
+            WIVSMNote note;
+            var previousCurrentNote = JobPlugin.Instance.CurrentNote;
+            if (JobPlugin.Instance.CurrentNote == null)
             {
-                JobPlugin.Instance.CurrentNoteId++;
-                returnCode = 1;
+                JobPlugin.Instance.CurrentNote = part.Notes.First();
+                note = JobPlugin.Instance.CurrentNote;
             }
             else
             {
-                noteId = part.NumNotes - 1;
-                note = part.GetNote(noteId);
+                note = JobPlugin.Instance.CurrentNote.Next ?? part.Notes.Last();
+                JobPlugin.Instance.CurrentNote = note;
             }
-            luaNote.ObjID = noteId;
+
+            luaNote.ObjID = (ulong)part.Notes.IndexOf(note);
             luaNote.NoteNum = note.NoteNumber;
             luaNote.PhonemeLock = note.IsProtected;
             luaNote.Phonemes = note.Phonemes;
@@ -49,9 +50,11 @@ namespace JobPlugin.Lua.Commands
             luaNote.VibratoType = (int)note.VibratoType;
 
             // Update the current position
-            
-
-            return new LuaVararg(new LuaValue[] { new LuaNumber(returnCode), luaNote.ToLuaTable() }, true);
+            if (previousCurrentNote != null && previousCurrentNote.Next == null)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaNote.ToLuaTable() }, true);
+            }
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaNote.ToLuaTable() }, true);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

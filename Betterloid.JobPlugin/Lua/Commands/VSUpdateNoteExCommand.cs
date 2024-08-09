@@ -19,35 +19,29 @@ namespace JobPlugin.Lua.Commands
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 
             ulong noteId = luaNote.ObjID;
-            int returnValue;
-            if (noteId < part.NumNotes) // Verify that the current note is within the part
+            if ((int)noteId >= part.Notes.Count)
             {
-                    // Populate the lua note's infos
-                    var note = part.GetNote(noteId);
-                    note.IsProtected = luaNote.PhonemeLock;
-                    note.SetNoteNumber(luaNote.NoteNum);
-                    note.Lyric = luaNote.Lyric;
-                    note.NoteVelocity = luaNote.Velocity;
+                return 0;
+            }
+            var note = part.Notes[(int)noteId];
+            note.IsProtected = luaNote.PhonemeLock;
+            note.SetNoteNumber(luaNote.NoteNum);
+            note.Lyric = luaNote.Lyric;
+            note.NoteVelocity = luaNote.Velocity;
 #if VOCALOID6
-                    note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
-                    note.SetDuration(new VSMRelTick(luaNote.DurTick));
-                    part.MoveNote(new VSMRelTick(luaNote.PosTick), note);
-                    
+            note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
+            note.SetDuration(new VSMRelTick(luaNote.DurTick));
+            part.MoveNote(new VSMRelTick(luaNote.PosTick), note);
+
 #elif VOCALOID5
-                    note.SetPhonemes(luaNote.Phonemes, true);
-                    note.SetDuration((int)luaNote.DurTick);
-                    part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
+            note.SetPhonemes(luaNote.Phonemes, true);
+            note.SetDuration((int)luaNote.DurTick);
+            part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
 #endif
-                note.SetNoteExpression(new VSMNoteExpression(luaNote.Accent, luaNote.Decay, luaNote.BendDepth, luaNote.BendLength, luaNote.Opening, luaNote.RisePort > 0, luaNote.FallPort > 0));
+            note.SetNoteExpression(new VSMNoteExpression(luaNote.Accent, luaNote.Decay, luaNote.BendDepth, luaNote.BendLength, luaNote.Opening, luaNote.RisePort > 0, luaNote.FallPort > 0));
 
                 JobPlugin.Instance.Modified = true;
-                returnValue = 1;
-            }
-            else
-            {
-                returnValue = 0;
-            }
-            return returnValue;
+            return 1;
         }
 
         public static void RegisterCommand(LuaRuntime lua)
