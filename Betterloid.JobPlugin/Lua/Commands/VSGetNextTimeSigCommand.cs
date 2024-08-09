@@ -16,7 +16,10 @@ namespace JobPlugin.Lua.Commands
             VSLuaTimeSig luaTimeSig = new VSLuaTimeSig();
             WIVSMTimeSig timesig;
             var previousCurrentTimeSig = JobPlugin.Instance.CurrentTimeSig;
-
+            if (sequence.TimeSigs.Count == 0)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+            }
             timesig = JobPlugin.Instance.CurrentTimeSig.Next ?? sequence.TimeSigs.Last();
             JobPlugin.Instance.CurrentTimeSig = timesig;
             luaTimeSig.Numerator = timesig.Numer;

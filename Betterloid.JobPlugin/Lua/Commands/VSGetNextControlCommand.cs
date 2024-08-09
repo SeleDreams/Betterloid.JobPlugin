@@ -27,6 +27,10 @@ namespace JobPlugin.Lua.Commands
             }
 
             var previousController = JobPlugin.Instance.CurrentControl[controlType];
+            if (part.GetNumController(vsmControlType) == 0)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+            }
             var controller = JobPlugin.Instance.CurrentControl[controlType].Next ?? JobPlugin.Instance.Controllers[controlType].Last();
             JobPlugin.Instance.CurrentControl[controlType] = controller;
             VSLuaControl luaControl = new VSLuaControl(controller.RelPosition.Tick, controller.Value, controlType, (ulong)JobPlugin.Instance.Controllers[controlType].IndexOf(controller));

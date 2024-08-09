@@ -16,6 +16,10 @@ namespace JobPlugin.Lua.Commands
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
             WIVSMNote note;
             var previousCurrentNote = JobPlugin.Instance.CurrentNote;
+            if (part.Notes.Count == 0)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+            }
             if (JobPlugin.Instance.CurrentNote == null)
             {
                 JobPlugin.Instance.CurrentNote = part.Notes.First();

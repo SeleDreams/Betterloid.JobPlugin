@@ -16,6 +16,10 @@ namespace JobPlugin.Lua.Commands
             VSLuaTempo luaTempo = new VSLuaTempo();
             WIVSMTempo tempo;
             var previousCurrentTempo = JobPlugin.Instance.CurrentTempo;
+            if (sequence.Tempos.Count == 0)
+            {
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+            }
 
             tempo = JobPlugin.Instance.CurrentTempo.Next ?? sequence.Tempos.Last();
             JobPlugin.Instance.CurrentTempo = tempo;
