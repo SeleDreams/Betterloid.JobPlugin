@@ -117,6 +117,18 @@ namespace JobPlugin.Lua
             VSUpdateMusicalPartCommand.RegisterCommand(Runtime);
 
             VSGetMusicalPartSingerCommand.RegisterCommand(Runtime);
+
+            VSSeekToBeginTempoCommand.RegisterCommand(Runtime);
+            VSSeekToBeginTimeSigCommand.RegisterCommand(Runtime);
+
+            VSGetNextTempoCommand.RegisterCommand(Runtime);
+            VSGetTempoAtCommand.RegisterCommand(Runtime);
+            VSGetNextTimeSigCommand.RegisterCommand(Runtime);
+            VSGetTimeSigAtCommand.RegisterCommand(Runtime);
+
+            VSGetSequenceNameCommand.RegisterCommand(Runtime);
+            VSGetSequencePathCommand.RegisterCommand(Runtime);
+            VSGetResolutionCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

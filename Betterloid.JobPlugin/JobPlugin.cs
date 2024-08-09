@@ -32,6 +32,10 @@ namespace JobPlugin
         public MusicalEditorViewModel MusicalEditor { get; private set; }
         // The current note, will be returned in the next VSGetNextNote call
         public WIVSMNote CurrentNote { get; set; }
+
+        public WIVSMTempo CurrentTempo { get; set; }
+        public WIVSMTimeSig CurrentTimeSig { get; set; }
+        
         // The current control, will be returned in the next VSGetNextControl call
         public Dictionary<VSControlType, WIVSMMidiController> CurrentControl { get; set; } = new Dictionary<VSControlType, WIVSMMidiController>();
         // For some reason, the vocaloid api does not give direct access to the controllers list compared to notes. As such it is harder to keep track of their IDs, that's why we cache references to them in this list when VSSeekToBeginControlCommand is called
