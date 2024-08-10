@@ -47,8 +47,9 @@ namespace JobPlugin.Lua
             // Register the package path of the currently running lua script
             Runtime.DoString($"package.path = \"{LUAFolder}/?.lua;\" .. package.path").Dispose();
 
+            string content = File.ReadAllText(LUA);
             // Run the script to register its methods
-            Runtime.DoString($"dofile(\"{LUA}\")").Dispose();
+            Runtime.DoString(content).Dispose();
 
             ExecuteCommand.RegisterCommand(Runtime);
             PrintCommand.RegisterCommand(Runtime);

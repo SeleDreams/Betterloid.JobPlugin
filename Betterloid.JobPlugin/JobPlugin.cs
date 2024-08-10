@@ -121,7 +121,7 @@ namespace JobPlugin
             }
             catch (Exception ex)
             {
-                Error();
+                Error(ex);
                 Debug.WriteLine($"{ex}");
             }
             Directory.SetCurrentDirectory(previous);
