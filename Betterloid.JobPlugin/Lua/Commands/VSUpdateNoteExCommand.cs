@@ -2,6 +2,8 @@
 using Eluant;
 using Yamaha.VOCALOID.VSM;
 using JobPlugin.Lua.Types;
+using System.Windows.Media;
+
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -24,10 +26,14 @@ namespace JobPlugin.Lua.Commands
                 return 0;
             }
             var note = part.Notes[(int)noteId];
-            note.IsProtected = luaNote.PhonemeLock;
+            
             note.SetNoteNumber(luaNote.NoteNum);
             note.Lyric = luaNote.Lyric;
             note.NoteVelocity = luaNote.Velocity;
+            if (note.IsProtected)
+            {
+                note.IsProtected = false;
+            }
 #if VOCALOID6
             note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
             note.SetDuration(new VSMRelTick(luaNote.DurTick));
@@ -39,8 +45,8 @@ namespace JobPlugin.Lua.Commands
             part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
 #endif
             note.SetNoteExpression(new VSMNoteExpression(luaNote.Accent, luaNote.Decay, luaNote.BendDepth, luaNote.BendLength, luaNote.Opening, luaNote.RisePort > 0, luaNote.FallPort > 0));
-
-                JobPlugin.Instance.Modified = true;
+            note.IsProtected = luaNote.PhonemeLock;
+            JobPlugin.Instance.Modified = true;
             return 1;
         }
 

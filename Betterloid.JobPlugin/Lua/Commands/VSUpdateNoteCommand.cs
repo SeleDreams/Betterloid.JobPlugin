@@ -24,10 +24,14 @@ namespace JobPlugin.Lua.Commands
                 return 0;
             }
             var note = part.Notes[(int)noteId];
-            note.IsProtected = luaNote.PhonemeLock;
+            
             note.SetNoteNumber(luaNote.NoteNum);
             note.Lyric = luaNote.Lyric;
             note.NoteVelocity = luaNote.Velocity;
+            if (note.IsProtected)
+            {
+                note.IsProtected = false;
+            }
 #if VOCALOID6
             note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
             note.SetDuration(new VSMRelTick(luaNote.DurTick));
@@ -38,7 +42,8 @@ namespace JobPlugin.Lua.Commands
             note.SetDuration((int)luaNote.DurTick);
             part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
 #endif
-        JobPlugin.Instance.Modified = true;
+            note.IsProtected = luaNote.PhonemeLock;
+            JobPlugin.Instance.Modified = true;
         return 1;
         }
 
