@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using Betterloid.Wrappers;
 using JobPlugin.Lua.Commands;
 using Yamaha.VOCALOID.VLC;
+using System.Text;
 
 namespace JobPlugin.Lua
 {
@@ -46,10 +47,10 @@ namespace JobPlugin.Lua
            
             // Register the package path of the currently running lua script
             Runtime.DoString($"package.path = \"{LUAFolder}/?.lua;\" .. package.path").Dispose();
+            Directory.SetCurrentDirectory(LUAFolder);
 
-            string content = File.ReadAllText(LUA);
             // Run the script to register its methods
-            Runtime.DoString(content).Dispose();
+            Runtime.DoString($"dofile \"{LUAFilename}\"").Dispose();
 
             ExecuteCommand.RegisterCommand(Runtime);
             PrintCommand.RegisterCommand(Runtime);

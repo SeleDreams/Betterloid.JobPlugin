@@ -15,6 +15,11 @@ namespace VSDialog
         public VSDialog()
         {
             InitializeComponent();
+            Activated += (sender, e) =>
+            {
+                Topmost = true;
+                Topmost = false;
+            };
         }
 
         public bool DoModal()
@@ -62,7 +67,7 @@ namespace VSDialog
                 Content = labelText,
                 Height = 30,
                 Margin = new Thickness(4),
-                VerticalAlignment = VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
             Grid.SetRow(label, xFieldGrid.RowDefinitions.Count - 1);
             Grid.SetColumn(label, 0);
