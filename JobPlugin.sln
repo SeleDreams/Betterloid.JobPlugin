@@ -10,9 +10,9 @@ EndProject
 Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "VOCALOID6", "VOCALOID6\VOCALOID6.exe", "{F1780B10-2576-4714-B7DC-2702C9F73223}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Users\SeleDreams\Desktop\Betterloid.JobPlugin\VOCALOID6\VOCALOID6.exe
+		Executable = C:\Users\SeleDreams\Desktop\BetterloidDev\Betterloid.JobPlugin\VOCALOID6\VOCALOID6.exe
 		RemoteMachine = DESKTOP-9MM0H1E
-		StartingDirectory = C:\Users\SeleDreams\Desktop\Betterloid.JobPlugin\VOCALOID6
+		StartingDirectory = C:\Users\SeleDreams\Desktop\BetterloidDev\Betterloid.JobPlugin\VOCALOID6
 		Environment = Par défaut
 		LaunchingEngine = 2e36f1d4-b23c-435d-ab41-18e608940038
 		UseLegacyDebugEngines = No
@@ -24,9 +24,9 @@ EndProject
 Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "VOCALOID5", "VOCALOID5\VOCALOID5.exe", "{42820BB9-5BB2-406D-94BD-F1378046C2EF}"
 	ProjectSection(DebuggerProjectSystem) = preProject
 		PortSupplier = 00000000-0000-0000-0000-000000000000
-		Executable = C:\Users\SeleDreams\Desktop\Betterloid.JobPlugin\VOCALOID5\VOCALOID5.exe
+		Executable = C:\Users\SeleDreams\Desktop\BetterloidDev\Betterloid.JobPlugin\VOCALOID5\VOCALOID5.exe
 		RemoteMachine = DESKTOP-9MM0H1E
-		StartingDirectory = C:\Users\SeleDreams\Desktop\Betterloid.JobPlugin\VOCALOID5
+		StartingDirectory = C:\Users\SeleDreams\Desktop\BetterloidDev\Betterloid.JobPlugin\VOCALOID5
 		Environment = Par défaut
 		LaunchingEngine = fb0d4648-f776-4980-95f8-bb7f36ebc1ee
 		UseLegacyDebugEngines = No

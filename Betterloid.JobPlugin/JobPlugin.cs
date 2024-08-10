@@ -44,7 +44,7 @@ namespace JobPlugin
         public bool Modified { get; set; }
 
 
-        private void Error()
+        private void Error(Exception ex = null)
         {
             if (Modified)
             {
@@ -54,7 +54,15 @@ namespace JobPlugin
                 MusicalEditor.Sequence.VSMSequence.Undo();
 #endif
             }
-            MessageBoxDeliverer.GeneralError("The job plugin terminated with an error!");
+            if (ex == null)
+            {
+                MessageBoxDeliverer.GeneralError("The job plugin terminated with an error!");
+            }
+            else
+            {
+                MessageBoxDeliverer.GeneralError($"The job plugin crashed with the following exception! : {ex}\nThis should be reported.");
+            }
+            
         }
 
         public void Startup()
