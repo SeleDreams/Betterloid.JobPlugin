@@ -35,8 +35,13 @@ namespace JobPlugin.Lua.Commands
             luaNote.PhonemeLock = note.IsProtected;
             luaNote.Phonemes = note.Phonemes;
             luaNote.Lyric = note.Lyric;
+#if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;
+#elif VOCALOID6
+            luaNote.DurTick = note.DurationTick.Value;
+            luaNote.PosTick = note.RelPosTick.Value;
+#endif
 
             var expression = note.GetNoteExpression();
             luaNote.Accent = expression.Accent;
@@ -47,7 +52,7 @@ namespace JobPlugin.Lua.Commands
             luaNote.Opening = expression.Opening;
             luaNote.RisePort = expression.RisePort ? 1 : 0;
 #if VOCALOID6
-            luaNote.VibratoLength = note.VibratoDuration.Tick;
+            luaNote.VibratoLength = note.VibratoDurationTick.Value;
 #elif VOCALOID5
                 luaNote.VibratoLength = note.VibratoDuration;
 #endif

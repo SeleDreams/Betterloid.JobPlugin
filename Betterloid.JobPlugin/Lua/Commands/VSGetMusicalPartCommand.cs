@@ -18,8 +18,10 @@ namespace JobPlugin.Lua.Commands
             luaPart.ObjID = (ulong)part.Sequence.MidiParts.IndexOf(part);
             var firstNote = part.GetNote(0);
             int tick = 0;
+#if VOCALOID5
             if (firstNote != null)
             {
+
                 tick = (int)firstNote.RelPosition.Tick;
             }
             luaPart.PosTick = part.AbsPosition.Tick;
@@ -30,6 +32,21 @@ namespace JobPlugin.Lua.Commands
                 var lastNote = part.Notes.Last();
                 luaPart.PlayTime = (lastNote.RelPosition.Tick + lastNote.Duration.Tick) - firstNote.RelPosition.Tick;
             }
+#elif VOCALOID6
+            if (firstNote != null)
+            {
+
+                tick = (int)firstNote.RelPosTick.Value;
+            }
+            luaPart.PosTick = part.AbsPosTick.Value;
+            var info = new ProcessParam();
+            luaPart.DurTick = part.DurationTick.Value;
+            if (part.Notes.Count > 0)
+            {
+                var lastNote = part.Notes.Last();
+                luaPart.PlayTime = (lastNote.RelPosTick.Value + lastNote.DurationTick.Value) - firstNote.RelPosTick.Value;
+            }
+#endif
             else
             {
                 luaPart.PlayTime = 0;

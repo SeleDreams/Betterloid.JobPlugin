@@ -7,7 +7,6 @@ using Eluant;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Betterloid.Wrappers;
 using JobPlugin.Lua.Commands;
 using Yamaha.VOCALOID.VLC;
 using System.Text;

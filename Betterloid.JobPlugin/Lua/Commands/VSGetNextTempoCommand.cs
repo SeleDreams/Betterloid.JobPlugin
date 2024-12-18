@@ -24,9 +24,11 @@ namespace JobPlugin.Lua.Commands
             tempo = JobPlugin.Instance.CurrentTempo.Next ?? sequence.Tempos.Last();
             JobPlugin.Instance.CurrentTempo = tempo;
             luaTempo.Tempo = tempo.Value;
-            
+#if VOCALOID5
             luaTempo.PosTick = tempo.RelPosition.Tick;
-
+#elif VOCALOID6
+            luaTempo.PosTick = tempo.RelPosTick.Value;
+#endif
             if (previousCurrentTempo != null && previousCurrentTempo.Next == null)
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaTempo.ToTable() }, true);

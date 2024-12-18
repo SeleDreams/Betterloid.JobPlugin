@@ -26,13 +26,17 @@ namespace JobPlugin
             }
             WIVSMNote note;
 #if VOCALOID6
-           note = activePart.FirstSelectedNote;
+            note = activePart.FirstSelectedNote;
 #elif VOCALOID5
             note = activePart.Notes.FirstOrDefault(n => n.IsSelected);
 #endif
             if (note != null)
             {
+#if VOCALOID5
                 BeginPosTick = note.RelPosition.Tick;
+#elif VOCALOID6
+                BeginPosTick = note.RelPosTick.Value;
+#endif
             }
 #if VOCALOID6
             note = activePart.LastSelectedNote;
@@ -42,13 +46,23 @@ namespace JobPlugin
 #endif
             if (note != null)
             {
+#if VOCALOID5
                 EndPosTick = note.RelEnd.Tick;
+#elif VOCALOID6
+                BeginPosTick = note.RelEndTick.Value;
+#endif
             }
             else
             {
+#if VOCALOID5
                 EndPosTick = activePart.Duration.Tick;
+#elif VOCALOID6
+                EndPosTick = activePart.DurationTick.Value;
+#endif
             }
 
+
+#if VOCALOID5
             var pos = musicalEditor.SongPosition.Tick;
             if (pos < activePart.AbsPosition.Tick)
             {
@@ -59,8 +73,20 @@ namespace JobPlugin
                 pos = musicalEditor.SongPosition.Tick - activePart.AbsPosition.Tick;
             }
             SongPosTick = pos;
+        
+#elif VOCALOID6
+            var pos = musicalEditor.SongPosition.Value;
+            if (pos < activePart.AbsPosTick.Value)
+            {
+                pos = 0;
+            }
+            else
+            {
+                pos = musicalEditor.SongPosition.Value - activePart.AbsPosTick.Value;
+            }
+            SongPosTick = pos;
+#endif
         }
-
         [LuaMember("beginPosTick")]
         public long BeginPosTick { get; set; }
 

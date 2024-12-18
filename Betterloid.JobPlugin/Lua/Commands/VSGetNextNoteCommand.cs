@@ -36,8 +36,13 @@ namespace JobPlugin.Lua.Commands
             luaNote.PhonemeLock = note.IsProtected;
             luaNote.Phonemes = note.Phonemes;
             luaNote.Lyric = note.Lyric;
+#if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;
+#elif VOCALOID6
+            luaNote.DurTick = note.DurationTick.Value;
+            luaNote.PosTick = note.RelPosTick.Value;
+#endif
             // Update the current position
             if (previousCurrentNote != null && previousCurrentNote.Next == null)
             {

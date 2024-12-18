@@ -24,7 +24,11 @@ namespace JobPlugin.Lua.Commands
             JobPlugin.Instance.CurrentTimeSig = timesig;
             luaTimeSig.Numerator = timesig.Numer;
             luaTimeSig.Denominator = timesig.Denom;
+#if VOCALOID5
             luaTimeSig.PosTick = sequence.GetTickFromBar(timesig.PosBar).Tick;
+#elif VOCALOID6
+            luaTimeSig.PosTick = sequence.GetTickFromBar(timesig.PosBar).Value;
+#endif
 
             if (previousCurrentTimeSig != null && previousCurrentTimeSig.Next == null)
             {

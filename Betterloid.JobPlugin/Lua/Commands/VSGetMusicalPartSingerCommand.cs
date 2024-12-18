@@ -48,12 +48,12 @@ namespace JobPlugin.Lua.Commands
             luaSinger.VirtualBankSelect = vb.LangID;
 #elif VOCALOID6
             vb = part.VoiceBank();
-            WIVSMVoiceColorEffect midiEffect = (WIVSMVoiceColorEffect)part.EffectManager.GetMidiEffectByType(VSMMidiEffectType.VoiceColor);
-            luaSinger.Opening = midiEffect.GetVoiceColor(VSMVoiceColorParameterType.Mouth);
-            luaSinger.Breathiness = midiEffect.GetVoiceColor(VSMVoiceColorParameterType.Breathiness);
-            luaSinger.GenderFactor = midiEffect.GetVoiceColor(VSMVoiceColorParameterType.Character);
-            luaSinger.Brightness = midiEffect.GetVoiceColor(VSMVoiceColorParameterType.Exciter);
-            luaSinger.Clearness = 127 - midiEffect.GetVoiceColor(VSMVoiceColorParameterType.Air);
+            WIVSMVoiceColorEffect midiEffect = part.VoiceColorEffect;
+            luaSinger.Opening = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Mouth).RawInt;
+            luaSinger.Breathiness = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Breathiness).RawInt;
+            luaSinger.GenderFactor = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Character).RawInt;
+            luaSinger.Brightness = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Exciter).RawInt;
+            luaSinger.Clearness = 127 - midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Air).RawInt;
             luaSinger.VirtualBankSelect = vb.NativeLangID;
             luaSinger.VirtualProgramChange = vb.SingerID;
 #endif

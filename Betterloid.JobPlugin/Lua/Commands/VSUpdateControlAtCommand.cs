@@ -28,14 +28,20 @@ namespace JobPlugin.Lua.Commands
 #elif VOCALOID5
             var tick = new VSMRelTick((int)posTick);
 #endif
+
             var result = part.GetController(vsmControlType, tick, true, false);
-            if (result == null || result.RelPosition != tick)
+#if VOCALOID6
+            var resultPos = result.RelPosTick;
+#elif VOCALOID5
+            var resultPos = result.RelPosition;
+#endif
+            if (result == null || resultPos != tick)
             {
                 result = part.InsertController(tick, vsmControlType, value);
             }
             if (result != null)
             {
-                if (result.RelPosition == tick)
+                if (resultPos == tick)
                 {
                     result.Value = value;
                 }

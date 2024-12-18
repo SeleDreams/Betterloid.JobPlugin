@@ -33,7 +33,11 @@ namespace JobPlugin.Lua.Commands
             }
             var controller = JobPlugin.Instance.CurrentControl[controlType].Next ?? JobPlugin.Instance.Controllers[controlType].Last();
             JobPlugin.Instance.CurrentControl[controlType] = controller;
+#if VOCALOID5
             VSLuaControl luaControl = new VSLuaControl(controller.RelPosition.Tick, controller.Value, controlType, (ulong)JobPlugin.Instance.Controllers[controlType].IndexOf(controller));
+#elif VOCALOID6
+            VSLuaControl luaControl = new VSLuaControl(controller.RelPosTick.Value, controller.Value, controlType, (ulong)JobPlugin.Instance.Controllers[controlType].IndexOf(controller));
+#endif
             if (previousController != null && previousController.Next == null)
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaControl.ToTable() }, true);

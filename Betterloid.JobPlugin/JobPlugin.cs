@@ -67,6 +67,15 @@ namespace JobPlugin
 
         public void Startup()
         {
+#if VOCALOID6
+            var version = Betterloid.Betterloid.VocaloidVersionInfo;
+            if (version.ProductMinorPart < 5)
+            {
+                MessageBoxDeliverer.GeneralError("The minimal supported version of VOCALOID6 is VOCALOID 6.5 !");
+                return;
+            }
+#endif
+
             Instance = this;
             VSDialog = new VSDialog.VSDialog();
             MainWindow window = App.Current.MainWindow as MainWindow;
@@ -99,7 +108,7 @@ namespace JobPlugin
                     Manifest = Lua.GetManifest();
                     Lua.RegisterCommands();
                     ProcessParam processParam = new ProcessParam();
-                    EnvParam envParam = new EnvParam { ApiVersion = "3.0.1.0", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
+                    EnvParam envParam = new EnvParam { ApiVersion = "4.2.0.1", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
                     int result = 0;
                     var part = MusicalEditor.ActivePart ?? throw new NoActivePartException();
                     CurrentNote = part.GetNote(0);
