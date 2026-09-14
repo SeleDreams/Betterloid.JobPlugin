@@ -14,6 +14,11 @@ namespace JobPlugin.Lua.Commands
     {
         private static LuaVararg VSGetControlAt(string type, int posTick)
         {
+            Debug.WriteLine($"VSGetControlAt called with type={type}, posTick={posTick}");
+            if (posTick < 0)
+            {
+                posTick = 0;
+            }
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
@@ -24,10 +29,11 @@ namespace JobPlugin.Lua.Commands
             }
             catch
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(1),new VSLuaControl().ToTable()},true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(1),new LuaNumber(0)},false);
             }
             int value;
-            var controller = part.GetController(vsmControlType, new VSMRelTick(posTick), true, false);
+            WIVSMMidiController controller = part.GetController(vsmControlType, new VSMRelTick(posTick), true, false);
+            
             if (controller == null)
             {
                 var controlParameterType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);
@@ -41,8 +47,9 @@ namespace JobPlugin.Lua.Commands
             else
             {
                 value = controller.Value;
+                controller = null;
             }
-            return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(value) }, true);
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(value) }, false);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

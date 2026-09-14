@@ -1,7 +1,9 @@
-﻿using System;
-using System.Linq;
-using Eluant;
+﻿using Eluant;
 using JobPlugin.Lua.Types;
+using System;
+using System.Diagnostics;
+using System.Linq;
+using System.Windows.Documents;
 using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
@@ -10,6 +12,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetNextNoteEx()
         {
+            Debug.WriteLine("VSGetNextNoteEx called.");
             VSLuaNoteEx luaNote = new VSLuaNoteEx();
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
@@ -35,6 +38,8 @@ namespace JobPlugin.Lua.Commands
             luaNote.PhonemeLock = note.IsProtected;
             luaNote.Phonemes = note.Phonemes;
             luaNote.Lyric = note.Lyric;
+            luaNote.Velocity = note.NoteVelocity;
+           
 #if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;
@@ -52,18 +57,43 @@ namespace JobPlugin.Lua.Commands
             luaNote.Opening = expression.Opening;
             luaNote.RisePort = expression.RisePort ? 1 : 0;
 #if VOCALOID6
-            luaNote.VibratoLength = note.VibratoDurationTick.Value;
+            long vibTicks = note.VibratoDurationTick.Value;
+            if (luaNote.DurTick > 0)
+            {
+                luaNote.VibratoLength = (int)((vibTicks * 100) / luaNote.DurTick);
+            }
+            else
+            {
+                luaNote.VibratoLength = 0;
+            }
 #elif VOCALOID5
-                luaNote.VibratoLength = note.VibratoDuration;
+            // If V5 VibratoDuration is already percent, keep it.
+            // If it is ticks, use the same ratio as V6.
+            if (luaNote.DurTick > 0)
+             {
+              luaNote.VibratoLength = (int)((note.VibratoDuration * 100) / note.Duration.Tick);
+             }
+             else {
+                luaNote.VibratoLength = 0;
+             }
+           
 #endif
-            luaNote.VibratoType = (int)note.VibratoType;
-
+            if (luaNote.VibratoLength < 0) luaNote.VibratoLength = 0;
+            if (luaNote.VibratoLength > 100) luaNote.VibratoLength = 100;
             // Update the current position
+
+            LuaTable table = luaNote.ToLuaTable();
+            Debug.WriteLine("note table:");
+            foreach (var key in table.Keys)
+            {
+                Debug.WriteLine("  " + key.ToString() + " = " + table[key].ToString());
+            }
+            Debug.WriteLine("posTick via indexer = " + table["posTick"]);
             if (previousCurrentNote != null && previousCurrentNote.Next == null)
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaNote.ToLuaTable() }, true);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), table }, true);
             }
-            return new LuaVararg(new LuaValue[] { new LuaNumber(1), luaNote.ToLuaTable() }, true);
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), table }, true);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

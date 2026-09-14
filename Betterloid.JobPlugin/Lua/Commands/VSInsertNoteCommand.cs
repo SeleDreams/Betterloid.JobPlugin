@@ -3,6 +3,8 @@ using Eluant;
 using Yamaha.VOCALOID.VSM;
 using JobPlugin.Lua.Types;
 using Yamaha.VOCALOID.VDM;
+using System.Diagnostics;
+
 
 
 #if VOCALOID5
@@ -16,6 +18,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static int VSInsertNote(LuaTable noteTable)
         {
+            Debug.WriteLine("VSInsertNote called.");
             VSLuaNote luaNote = new VSLuaNote(noteTable);
             if (string.IsNullOrEmpty(luaNote.Phonemes) || luaNote.Phonemes == "nil")
             {

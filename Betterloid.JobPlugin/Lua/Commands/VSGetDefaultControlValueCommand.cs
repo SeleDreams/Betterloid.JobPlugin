@@ -17,7 +17,7 @@ namespace JobPlugin.Lua.Commands
         
         private static LuaVararg VSGetDefaultControlValue(string type)
         {
-
+            Debug.WriteLine("VSGetDefaultControlValue called.");
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
             VSControlType controlType;
             if (!Enum.TryParse(type, out controlType))

@@ -1,5 +1,6 @@
 ﻿using Eluant;
 using System;
+using System.Diagnostics;
 using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
@@ -8,6 +9,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetTimeSigAt(long ticks)
         {
+            Debug.WriteLine("VSGetTimeSigAt called.");
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var sequence = musicalEditor.Sequence;
             VSMAbsTick absTicks;

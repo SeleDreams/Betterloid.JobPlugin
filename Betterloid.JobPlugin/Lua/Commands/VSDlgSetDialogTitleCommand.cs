@@ -1,5 +1,6 @@
-﻿using System;
-using Eluant;
+﻿using Eluant;
+using System;
+using System.Diagnostics;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -7,6 +8,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static void VSDlgSetDialogTitle(string title)
         {
+            Debug.WriteLine("VSDlgSetDialogTitle called.");
             JobPlugin.Instance.VSDialog.Title = title;
         }
 

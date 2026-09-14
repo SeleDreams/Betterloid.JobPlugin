@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Eluant;
+using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Eluant;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -8,6 +9,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static void VSSeekToBeginNote()
         {
+            Debug.WriteLine("VSSeekToBeginNote called.");
             var part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
             JobPlugin.Instance.CurrentNote = null;
         }

@@ -17,6 +17,7 @@ namespace JobPlugin.Lua
     {
         public LuaRuntime Runtime { get; private set; }
         public string LUA { get; set; }
+        private readonly object luaLock = new object();
         public string LUAFolder {
             get => Path.GetDirectoryName(LUA).Replace("\\", "/");
         }
@@ -43,38 +44,118 @@ namespace JobPlugin.Lua
 
         public void RunScript()
         {
-           
-            // Register the package path of the currently running lua script
-            Runtime.DoString($"package.path = \"{LUAFolder}/?.lua;\" .. package.path").Dispose();
-            Directory.SetCurrentDirectory(LUAFolder);
+            lock (luaLock)
+            {
+                string folder = LUAFolder.Replace("\\", "/").Replace("\"", "\\\"");
+                string file = LUAFilename.Replace("\"", "\\\"");
 
-            // Run the script to register its methods
-            Runtime.DoString($"dofile \"{LUAFilename}\"").Dispose();
+                using (Runtime.DoString("package.path = \"" + folder + "/?.lua;\" .. package.path"))
+                {
+                }
 
-            ExecuteCommand.RegisterCommand(Runtime);
-            PrintCommand.RegisterCommand(Runtime);
+                string oldDir = Directory.GetCurrentDirectory();
+                try
+                {
+                    Directory.SetCurrentDirectory(LUAFolder);
+                    using (Runtime.DoString("dofile(\"" + file + "\")"))
+                    {
+                    }
+                    using (Runtime.DoString(
+                         "function __job_trace(e)\n" +
+                         "  return tostring(e) .. \"\\n\" .. debug.traceback()\n" +
+                         "end\n" +
+                         "function __job_main(processParam, envParam)\n" +
+                         "  local ok, res = xpcall(function()\n" +
+                         "    return main(processParam, envParam)\n" +
+                         "  end, __job_trace)\n" +
+                         "  if not ok then error(res, 0) end\n" +
+                         "  return res\n" +
+                         "end\n"))
+                                        {
+                                        }
+                }
+                finally
+                {
+                    Directory.SetCurrentDirectory(oldDir);
+                }
+
+                ExecuteCommand.RegisterCommand(Runtime);
+                PrintCommand.RegisterCommand(Runtime);
+            }
+
         }
 
         public JobManifest GetManifest()
         {
-            LuaTable manifestTable = (LuaTable)((LuaFunction)Runtime.Globals["manifest"]).Call()[0];
-            return new JobManifest(manifestTable);
+            lock (luaLock)
+            {
+                LuaFunction manifestFn = null;
+                LuaVararg callResult = null;
+                LuaTable manifestTable = null;
+                try
+                {
+                    manifestFn = (LuaFunction)Runtime.Globals["manifest"];
+                    callResult = manifestFn.Call();
+                    manifestTable = (LuaTable)callResult[0];
+                    return new JobManifest(manifestTable);
+                }
+                finally
+                {
+                    if (manifestTable != null) manifestTable.Dispose();
+                    if (callResult != null) callResult.Dispose();
+                    if (manifestFn != null) manifestFn.Dispose();
+                }
+            }
         }
 
         public LuaNumber Main(ProcessParam processParam, EnvParam envParam)
         {
-            LuaTransparentClrObject transparentProcess = new LuaTransparentClrObject(processParam);
-            LuaTransparentClrObject transparentEnv = new LuaTransparentClrObject(envParam);
-            var returnValue = ((LuaFunction)Runtime.Globals["main"]).Call(transparentProcess, transparentEnv);
-            if (returnValue.Count > 0)
+            lock (luaLock)
             {
-                return (LuaNumber)returnValue[0];
+                LuaFunction jobMain = null;
+                LuaVararg returnValue = null;
+                try
+                {
+                    jobMain = Runtime.Globals["__job_main"] as LuaFunction;
+                    if (jobMain == null)
+                    {
+                        return new LuaNumber(1);
+                    }
+
+                    LuaTransparentClrObject transparentProcess = new LuaTransparentClrObject(processParam);
+                    LuaTransparentClrObject transparentEnv = new LuaTransparentClrObject(envParam);
+                    returnValue = jobMain.Call(transparentProcess, transparentEnv);
+
+                    if (returnValue.Count > 0 && returnValue[0] is LuaNumber)
+                    {
+                        return (LuaNumber)returnValue[0];
+                    }
+                    return new LuaNumber(0);
+                }
+                catch (LuaException ex)
+                {
+                    Betterloid.Wrappers.MessageBoxDeliverer.GeneralError($"LUA error : {ex.Message}");
+                    Debug.WriteLine("LUA main: " + ex.Message);
+                    return new LuaNumber(1);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Betterloid.Wrappers.MessageBoxDeliverer.GeneralError($"ELUANT error : {ex.Message}");
+                    Debug.WriteLine("ELUANT: " + ex.ToString());
+                    return new LuaNumber(1);
+                }
+                catch (Exception ex)
+                {
+                    Betterloid.Wrappers.MessageBoxDeliverer.GeneralError($"CLR error : {ex.Message}");
+                    Debug.WriteLine("CLR: " + ex.ToString());
+                    return new LuaNumber(1);
+                }
+                finally
+                {
+                    if (returnValue != null) returnValue.Dispose();
+                    if (jobMain != null) jobMain.Dispose();
+                }
             }
-            else
-            {
-                return new LuaNumber(0);
-            }
-            
         }
 
         public void RegisterCommands()
@@ -130,6 +211,13 @@ namespace JobPlugin.Lua
             VSGetSequenceNameCommand.RegisterCommand(Runtime);
             VSGetSequencePathCommand.RegisterCommand(Runtime);
             VSGetResolutionCommand.RegisterCommand(Runtime);
+            VSGetPremeasureCommand.RegisterCommand(Runtime);
+
+            VSSeekToBeginMonoWAVPartCommand.RegisterCommand(Runtime);
+            VSSeekToBeginStereoWAVPartCommand.RegisterCommand(Runtime);
+            VSGetNextMonoWAVPartCommand.RegisterCommand(Runtime);
+            VSGetNextStereoWAVPartCommand.RegisterCommand(Runtime);
+            VSGetStereoWavPartCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

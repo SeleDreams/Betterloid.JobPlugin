@@ -45,6 +45,8 @@ namespace JobPlugin.Lua.Types
                     return ControlParameterTypeEnum.Character;
                 case VSControlType.GWL:
                     return ControlParameterTypeEnum.Growl;
+                case VSControlType.BRE:
+                    return ControlParameterTypeEnum.Breathiness;
                 default:
                     throw new InvalidOperationException();
             }
@@ -65,6 +67,8 @@ namespace JobPlugin.Lua.Types
                     return VSMControllerType.Clearness;
                 case VSControlType.BRI:
                     return VSMControllerType.Brightness;
+                case VSControlType.BRE:
+                    return VSMControllerType.Breathiness;
                 case VSControlType.GEN:
                     return VSMControllerType.Character;
                 case VSControlType.GWL:

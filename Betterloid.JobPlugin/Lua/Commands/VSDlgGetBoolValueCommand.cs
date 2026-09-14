@@ -1,5 +1,6 @@
-﻿using System;
-using Eluant;
+﻿using Eluant;
+using System;
+using System.Diagnostics;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -7,6 +8,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSDlgGetBoolValue(string fieldName)
         {
+            Debug.WriteLine("VSDlgGetBoolValue called.");
             try
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(1), new LuaNumber(JobPlugin.Instance.VSDialog.GetBoolField(fieldName) ? 1 : 0)}, true);

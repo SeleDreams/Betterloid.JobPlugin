@@ -9,9 +9,9 @@ namespace JobPlugin.Lua.Types
         public int SampleRate { get; set; }
         public int SampleReso { get; set; }
         public int Channels { get; set; }
-        public string Name { get; set; }
-        public string Comment { get; set; }
-        public string FilePath { get; set; }
+        public string Name { get; set; } = "";
+        public string Comment { get; set; } = "";
+        public string FilePath { get; set; } = "";
 
         public VSLuaWAVPart() { }
         public VSLuaWAVPart(LuaTable table)

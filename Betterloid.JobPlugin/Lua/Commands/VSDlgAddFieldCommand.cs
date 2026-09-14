@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Eluant;
 using JobPlugin.Lua.Types;
 
@@ -38,6 +39,7 @@ namespace JobPlugin.Lua.Commands
 
         public static int VSDlgAddField(LuaTable luaField)
         {
+            Debug.WriteLine("VSDlgAddField called.");
             VSFlexDialogField field = new VSFlexDialogField(luaField);
             switch (field.Type)
             {

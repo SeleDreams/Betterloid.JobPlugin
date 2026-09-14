@@ -34,6 +34,13 @@ namespace JobPlugin
         public WIVSMNote CurrentNote { get; set; }
 
         public WIVSMTempo CurrentTempo { get; set; }
+        public int TempoSeek = 0;
+
+        public int TimeSigSeek = 0;
+        public int MonoSeek = 0;
+        public WIVSMAudioPart CurrentMonoWAVPart { get; set; }
+        public int StereoSeek = 0;
+        public WIVSMAudioPart CurrentStereoWAVPart { get; set; }
         public WIVSMTimeSig CurrentTimeSig { get; set; }
         
         // The current control, will be returned in the next VSGetNextControl call
@@ -108,7 +115,7 @@ namespace JobPlugin
                     Manifest = Lua.GetManifest();
                     Lua.RegisterCommands();
                     ProcessParam processParam = new ProcessParam();
-                    EnvParam envParam = new EnvParam { ApiVersion = "4.2.0.1", ScriptDir = Lua.LUAFolder, ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
+                    EnvParam envParam = new EnvParam { ApiVersion = "4.2.0.1", ScriptDir = Lua.LUAFolder + "/", ScriptName = Lua.LUAFilename, TempDir = Path.GetTempPath().Replace("\\","/")};
                     int result = 0;
                     var part = MusicalEditor.ActivePart ?? throw new NoActivePartException();
                     CurrentNote = part.GetNote(0);

@@ -1,5 +1,6 @@
-﻿using System;
-using Eluant;
+﻿using Eluant;
+using System;
+using System.Diagnostics;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -7,6 +8,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static int VSDlgDoModal()
         {
+            Debug.WriteLine("VSDlgDoModal called.");
             bool result = JobPlugin.Instance.VSDialog.DoModal();
             if (result)
             {

@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Eluant;
+using JobPlugin.Lua.Types;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Eluant;
-using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -12,6 +13,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetMusicalPart()
         {
+            Debug.WriteLine("VSGetMusicalPart called.");
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
             VSLuaMusicalPart luaPart = new VSLuaMusicalPart();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Eluant;
 using JobPlugin.Lua.Types;
@@ -14,6 +15,7 @@ namespace JobPlugin.Lua.Commands
     {
         private static LuaVararg VSGetStereoWavPart()
         {
+            Debug.WriteLine("VSGetStereoWavPart called.");
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var sequence = musicalEditor.ActiveTrack.Parent;
             var stereo = sequence.AudioTracks.FirstOrDefault(m => m.Name == "Stereo");
@@ -43,16 +45,14 @@ namespace JobPlugin.Lua.Commands
 #endif
             }
 
-
-            return null; //App.Shared.Document.FileName;
-            // TODO
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1), wavInfo.ToTable() }, true);
         }
 
         public static void RegisterCommand(LuaRuntime lua)
         {
             using (var fn = lua.CreateFunctionFromDelegate(new Func<LuaVararg>(VSGetStereoWavPart)))
             {
-                lua.Globals["VSGetStereoWavPart"] = fn;
+                lua.Globals["VSGetStereoWAVPart"] = fn;
             }
         }
     }

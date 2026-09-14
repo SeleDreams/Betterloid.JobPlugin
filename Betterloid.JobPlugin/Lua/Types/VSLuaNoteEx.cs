@@ -55,6 +55,7 @@ namespace JobPlugin.Lua.Types
         // 0: No vibrato
         // 1 - 4: Normal // 5 - 8: Extreme // 9 -12: Fast // 13 - 16: Slight
         public int VibratoType { get; set; }
+
     };
 
 }

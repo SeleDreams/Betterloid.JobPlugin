@@ -36,6 +36,7 @@ namespace JobPlugin
                 BeginPosTick = note.RelPosition.Tick;
 #elif VOCALOID6
                 BeginPosTick = note.RelPosTick.Value;
+
 #endif
             }
 #if VOCALOID6
@@ -49,7 +50,7 @@ namespace JobPlugin
 #if VOCALOID5
                 EndPosTick = note.RelEnd.Tick;
 #elif VOCALOID6
-                BeginPosTick = note.RelEndTick.Value;
+                EndPosTick = note.RelEndTick.Value;
 #endif
             }
             else

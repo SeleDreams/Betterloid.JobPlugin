@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Eluant;
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -11,9 +12,11 @@ namespace JobPlugin.Lua.Commands
     {
         private static string VSGetSequenceName()
         {
-            var musicalEditor = JobPlugin.Instance.MusicalEditor;
-            var sequence = musicalEditor.ActiveTrack.Parent;
-            return App.Shared.Document.FileName;
+            Debug.WriteLine("VSGetSequenceName called.");
+            /*     var musicalEditor = JobPlugin.Instance.MusicalEditor;
+                 var sequence = musicalEditor.ActiveTrack.Parent;
+                 return App.Shared.Document.FileName;*/
+            return "";
         }
 
         public static void RegisterCommand(LuaRuntime lua)

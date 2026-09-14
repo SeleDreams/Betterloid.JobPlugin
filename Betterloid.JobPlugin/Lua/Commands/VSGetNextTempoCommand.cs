@@ -1,8 +1,9 @@
 ﻿using Eluant;
+using JobPlugin.Lua.Types;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Yamaha.VOCALOID.VSM;
-using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -10,12 +11,15 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetNextTempo()
         {
+            Debug.WriteLine("VSGetNextTempo called.");
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var sequence = musicalEditor.ActiveTrack.Parent;
 
             VSLuaTempo luaTempo = new VSLuaTempo();
             WIVSMTempo tempo;
             var previousCurrentTempo = JobPlugin.Instance.CurrentTempo;
+            bool isFirstTempo = JobPlugin.Instance.TempoSeek == 0;
+            JobPlugin.Instance.TempoSeek += 1;
             if (sequence.Tempos.Count == 0)
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
@@ -29,7 +33,7 @@ namespace JobPlugin.Lua.Commands
 #elif VOCALOID6
             luaTempo.PosTick = tempo.RelPosTick.Value;
 #endif
-            if (previousCurrentTempo != null && previousCurrentTempo.Next == null)
+            if (!isFirstTempo && previousCurrentTempo != null && previousCurrentTempo.Next == null)
             {
                 return new LuaVararg(new LuaValue[] { new LuaNumber(0), luaTempo.ToTable() }, true);
             }

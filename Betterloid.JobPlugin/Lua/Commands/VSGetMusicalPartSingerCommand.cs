@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VDM;
 using Yamaha.VOCALOID.VSM;
+using System.Diagnostics;
+
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -24,6 +26,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetMusicalPartSinger()
         {
+            Debug.WriteLine("VSGetMusicalPartSinger called.");
             VSLuaMusicalSinger luaSinger = new VSLuaMusicalSinger();
             var part = JobPlugin.Instance.MusicalEditor.ActivePart;
             VoiceBank vb;

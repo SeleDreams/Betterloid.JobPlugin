@@ -1,7 +1,8 @@
-﻿using System;
-using Betterloid.Wrappers;
+﻿using Betterloid.Wrappers;
 using Eluant;
 using MsgBoxEx;
+using System;
+using System.Diagnostics;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -72,6 +73,7 @@ namespace JobPlugin.Lua.Commands
 
         public static int VSMessageBox(string message, int type)
         {
+            Debug.WriteLine("VSMessageBox called.");
             if (!Enum.IsDefined(typeof(VSMessageBoxType),type))
             {
                 MessageBoxDeliverer.GeneralError("The type defined for the message box type is invalid");

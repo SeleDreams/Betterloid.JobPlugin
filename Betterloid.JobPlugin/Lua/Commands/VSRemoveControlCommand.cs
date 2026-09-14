@@ -12,6 +12,7 @@ namespace JobPlugin.Lua.Commands
         
         private static int VSRemoveControl(LuaTable table)
         {
+            Debug.WriteLine("VSRemoveControl called.");
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
             VSLuaControl control = new VSLuaControl(table);
             VSControlType controlType = control.Type;

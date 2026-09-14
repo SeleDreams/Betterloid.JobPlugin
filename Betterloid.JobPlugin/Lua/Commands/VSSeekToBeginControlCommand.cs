@@ -19,6 +19,7 @@ namespace JobPlugin.Lua.Commands
         
         private static int VSSeekToBeginControl(string type)
         {
+            Debug.WriteLine("VSSeekToBeginControl called.");
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);

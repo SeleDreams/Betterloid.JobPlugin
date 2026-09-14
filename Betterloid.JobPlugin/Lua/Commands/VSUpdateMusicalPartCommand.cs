@@ -2,6 +2,7 @@
 using JobPlugin.Lua.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static int VSUpdateMusicalPart(LuaTable table)
         {
+            Debug.WriteLine("VSUpdateMusicalPart called.");
             VSLuaMusicalPart luaPart = new VSLuaMusicalPart(table);
             var part = JobPlugin.Instance.MusicalEditor.ActivePart;
             part.SetName(luaPart.Name);

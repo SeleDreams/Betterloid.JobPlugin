@@ -1,8 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Eluant;
+﻿using Eluant;
 using JobPlugin.Lua.Types;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Yamaha.VOCALOID.VSM;
 
 namespace JobPlugin.Lua.Commands
@@ -11,6 +12,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static LuaVararg VSGetNextNote()
         {
+            Debug.WriteLine("VSGetNextNote called.");
             VSLuaNote luaNote = new VSLuaNote();
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
@@ -36,6 +38,7 @@ namespace JobPlugin.Lua.Commands
             luaNote.PhonemeLock = note.IsProtected;
             luaNote.Phonemes = note.Phonemes;
             luaNote.Lyric = note.Lyric;
+            luaNote.Velocity = note.NoteVelocity;
 #if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;

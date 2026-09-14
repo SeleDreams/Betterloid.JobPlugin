@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +18,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static string VSGetAudioDeviceName()
         {
+            Debug.WriteLine("VSGetAudioDeviceName called.");
             var audioDeviceManager = App.AudioPlayer.AudioDeviceManager;
             VEAudioDevice currentAudioDevice;
 #if VOCALOID5

@@ -3,6 +3,8 @@ using Eluant;
 using Yamaha.VOCALOID.VSM;
 using JobPlugin.Lua.Types;
 using System.Windows.Media;
+using System.Diagnostics;
+
 
 
 #if VOCALOID5
@@ -16,6 +18,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static int VSUpdateNoteEx(LuaTable noteTable)
         {
+            Debug.WriteLine("VSUpdateNoteEx called.");
             VSLuaNoteEx luaNote = new VSLuaNoteEx(noteTable);
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
@@ -37,11 +40,13 @@ namespace JobPlugin.Lua.Commands
 #if VOCALOID6
             note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
             note.SetDuration(new VSMRelTick(luaNote.DurTick));
+            note.SetVibratoDuration(new VSMRelTick((int)(luaNote.VibratoLength * luaNote.DurTick / 100)));
             part.MoveNote(new VSMRelTick(luaNote.PosTick), note);
 
 #elif VOCALOID5
             note.SetPhonemes(luaNote.Phonemes, true);
             note.SetDuration((int)luaNote.DurTick);
+            note.SetVibratoDuration((int)(luaNote.VibratoLength * luaNote.DurTick / 100));
             part.MoveNote(new VSMRelTick((int)luaNote.PosTick), note);
 #endif
             note.SetNoteExpression(new VSMNoteExpression(luaNote.Accent, luaNote.Decay, luaNote.BendDepth, luaNote.BendLength, luaNote.Opening, luaNote.RisePort > 0, luaNote.FallPort > 0));

@@ -11,8 +11,10 @@ namespace JobPlugin.Lua.Commands
         
         private static int VSUpdateControl(LuaTable table)
         {
-            WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
+            
             VSLuaControl control = new VSLuaControl(table);
+            Debug.WriteLine($"VSUpdateControl called with args : type={control.Type}, posTick={control.PosTick},value={control.Value}.");
+            WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
             VSControlType controlType = control.Type;
             VSMControllerType vsmControlType;
             try

@@ -2,6 +2,8 @@
 using Eluant;
 using Yamaha.VOCALOID.VSM;
 using JobPlugin.Lua.Types;
+using System.Diagnostics;
+
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -14,6 +16,7 @@ namespace JobPlugin.Lua.Commands
     {
         public static int VSRemoveNote(LuaTable noteTable)
         {
+            Debug.WriteLine("VSRemoveNote called.");
             VSLuaNote luaNote = new VSLuaNote(noteTable);
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();

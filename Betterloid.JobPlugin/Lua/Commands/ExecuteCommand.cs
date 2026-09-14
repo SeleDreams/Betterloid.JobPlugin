@@ -1,6 +1,9 @@
 ﻿using Eluant;
 using System;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace JobPlugin.Lua.Commands
 {
@@ -8,6 +11,10 @@ namespace JobPlugin.Lua.Commands
     {
         private static int Execute(string value)
         {
+            if (string.IsNullOrEmpty(value))
+            {
+                return 1;
+            }
             var processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = "cmd.exe";
             processStartInfo.Arguments = "/C chcp 65001 && " + value;
@@ -15,6 +22,8 @@ namespace JobPlugin.Lua.Commands
             processStartInfo.RedirectStandardError = true;
             processStartInfo.UseShellExecute = false;
             processStartInfo.CreateNoWindow = true;
+            processStartInfo.StandardOutputEncoding = Encoding.UTF8;
+            processStartInfo.StandardErrorEncoding = Encoding.UTF8;
             Process processTemp = new Process();
             processTemp.StartInfo = processStartInfo;
             processTemp.EnableRaisingEvents = true;
@@ -29,7 +38,6 @@ namespace JobPlugin.Lua.Commands
             }
             return processTemp.ExitCode;
         }
-
         public static void RegisterCommand(LuaRuntime lua)
         {
             using (var fn = lua.CreateFunctionFromDelegate(new Func<string,int>(Execute)))

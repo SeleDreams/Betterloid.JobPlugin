@@ -13,6 +13,7 @@ namespace JobPlugin.Lua.Commands
         
         private static LuaVararg VSGetNextControl(string type)
         {
+            Debug.WriteLine("VSGetNextControl called.");
             WIVSMMidiPart part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
 
             VSControlType controlType = (VSControlType)Enum.Parse(typeof(VSControlType), type);
@@ -23,13 +24,14 @@ namespace JobPlugin.Lua.Commands
             }
             catch
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+                throw new ArgumentOutOfRangeException("The current parameter " + type + " is undefined !");
+                //return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
             }
 
-            var previousController = JobPlugin.Instance.CurrentControl[controlType];
+            WIVSMMidiController previousController = JobPlugin.Instance.CurrentControl?[controlType];
             if (part.GetNumController(vsmControlType) == 0)
             {
-                return new LuaVararg(new LuaValue[] { new LuaNumber(0), LuaNil.Instance }, false);
+                return new LuaVararg(new LuaValue[] { new LuaNumber(0), new VSLuaControl(0,0,controlType,0).ToTable() }, true);
             }
             var controller = JobPlugin.Instance.CurrentControl[controlType].Next ?? JobPlugin.Instance.Controllers[controlType].Last();
             JobPlugin.Instance.CurrentControl[controlType] = controller;
