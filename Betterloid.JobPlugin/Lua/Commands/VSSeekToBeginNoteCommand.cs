@@ -1,7 +1,7 @@
 ﻿using Eluant;
 using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
+using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua.Commands
 {

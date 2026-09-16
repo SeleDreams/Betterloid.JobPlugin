@@ -10,6 +10,7 @@ using System.Runtime.CompilerServices;
 using JobPlugin.Lua.Commands;
 using Yamaha.VOCALOID.VLC;
 using System.Text;
+using JobPlugin.Lua.Types;
 
 namespace JobPlugin.Lua
 {
@@ -114,22 +115,21 @@ namespace JobPlugin.Lua
             {
                 LuaFunction jobMain = null;
                 LuaVararg returnValue = null;
+                LuaTable processParamTable = null;
+                LuaTable envParamTable = null;
                 try
                 {
                     jobMain = Runtime.Globals["__job_main"] as LuaFunction;
                     if (jobMain == null)
-                    {
                         return new LuaNumber(1);
-                    }
 
-                    LuaTransparentClrObject transparentProcess = new LuaTransparentClrObject(processParam);
-                    LuaTransparentClrObject transparentEnv = new LuaTransparentClrObject(envParam);
-                    returnValue = jobMain.Call(transparentProcess, transparentEnv);
+                    processParamTable = processParam.ToTable();
+                    envParamTable = envParam.ToTable();
+                    returnValue = jobMain.Call(processParamTable, envParamTable);
 
-                    if (returnValue.Count > 0 && returnValue[0] is LuaNumber)
-                    {
-                        return (LuaNumber)returnValue[0];
-                    }
+                    if (returnValue.Count > 0 && returnValue[0] is LuaNumber n)
+                        return n;
+
                     return new LuaNumber(0);
                 }
                 catch (LuaException ex)
@@ -152,8 +152,10 @@ namespace JobPlugin.Lua
                 }
                 finally
                 {
-                    if (returnValue != null) returnValue.Dispose();
-                    if (jobMain != null) jobMain.Dispose();
+                    returnValue?.Dispose();
+                    jobMain?.Dispose();
+                    processParamTable?.Dispose();
+                    envParamTable?.Dispose();
                 }
             }
         }
@@ -218,6 +220,8 @@ namespace JobPlugin.Lua
             VSGetNextMonoWAVPartCommand.RegisterCommand(Runtime);
             VSGetNextStereoWAVPartCommand.RegisterCommand(Runtime);
             VSGetStereoWavPartCommand.RegisterCommand(Runtime);
+
+            VSSetPitchSnapModeCommand.RegisterCommand(Runtime);
         }
 
         public void Dispose()

@@ -19,7 +19,7 @@ namespace JobPlugin.Lua.Commands
             absTicks = new VSMAbsTick(ticks);
 #endif
             var tempo = musicalEditor.ActiveTrack.Parent.GetTempo(absTicks, true, false);
-            return new LuaVararg(new LuaValue[] { new LuaNumber(1),new LuaNumber(tempo.Value) }, false);
+            return new LuaVararg(new LuaValue[] { new LuaNumber(1),new LuaNumber((float)tempo.Value * 0.01f) }, false);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

@@ -27,7 +27,7 @@ namespace JobPlugin.Lua.Commands
 
             tempo = JobPlugin.Instance.CurrentTempo.Next ?? sequence.Tempos.Last();
             JobPlugin.Instance.CurrentTempo = tempo;
-            luaTempo.Tempo = tempo.Value;
+            luaTempo.Tempo = tempo.Value * 0.01f;
 #if VOCALOID5
             luaTempo.PosTick = tempo.RelPosition.Tick;
 #elif VOCALOID6
