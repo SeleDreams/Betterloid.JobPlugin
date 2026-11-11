@@ -25,7 +25,7 @@ namespace JobPlugin.Lua.Commands
             {
                 return 1;
             }
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             VSMRelTick tick = new VSMRelTick(control.PosTick);
 #elif VOCALOID5
             VSMRelTick tick = new VSMRelTick((int)control.PosTick);

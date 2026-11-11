@@ -30,7 +30,7 @@ namespace JobPlugin.Lua.Commands
             luaTimeSig.Denominator = timesig.Denom;
 #if VOCALOID5
             luaTimeSig.PosTick = sequence.GetTickFromBar(timesig.PosBar).Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             luaTimeSig.PosTick = sequence.GetTickFromBar(timesig.PosBar).Value;
 #endif
 

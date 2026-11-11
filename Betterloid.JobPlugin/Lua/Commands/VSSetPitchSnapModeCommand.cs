@@ -9,7 +9,7 @@ using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VOCALOID5;
 using Yamaha.VOCALOID.VOCALOID5.StyleEditor;
 using APP = Yamaha.VOCALOID.VOCALOID5.App;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using APP = Yamaha.VOCALOID.App;
 #endif
 
@@ -25,7 +25,17 @@ namespace JobPlugin.Lua.Commands
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             bool mode = value != 0;
             var part = JobPlugin.Instance.MusicalEditor.ActivePart ?? throw new NoActivePartException();
-            var effect = part.EffectManager.GetMidiEffectByType(VSMMidiEffectType.RobotVoice);
+            var track = JobPlugin.Instance.MusicalEditor.ActiveTrack ?? throw new NoActivePartException();
+            WIVSMMidiEffect effect;
+            WIVSMEffectManager effectManager;
+#if VOCALOID5 || VOCALOID6
+            effectManager = part.EffectManager;
+            effect = effectManager.GetMidiEffectByType(VSMMidiEffectType.RobotVoice);
+#elif VOCALOID7
+            effectManager = track.EffectManager;
+            effect = effectManager.GetMidiEffectByType(VSMMidiEffectType.RobotVoice);
+#endif
+
             if (effect == null)
             {
                 return new LuaNumber(0);
@@ -35,7 +45,6 @@ namespace JobPlugin.Lua.Commands
             
             if (mode)
             {
-                string modeName = effect.GetModeNameRobotVoice(VSMRobotVoiceModeType.Hard);
                 WIVSMEffectValue modeValue = effect.GetValueByName("Mode");
                 if (modeValue == null)
                 {
@@ -45,7 +54,7 @@ namespace JobPlugin.Lua.Commands
                 effect.ScriptFilePath = APP.LuaManager.GetRobotVoiceScriptPath(VSMRobotVoiceModeType.Hard);
                 effect.Timing = VSMMidiEffectTiming.BeforeRendering;
             }
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             effect.SetBypass(!mode);
 
             if (mode)
@@ -56,11 +65,15 @@ namespace JobPlugin.Lua.Commands
                     return new LuaNumber(0);
                 }
                 modeValue.SetRawInt((int)VSMRobotVoiceMode.Hard);
+#if VOCALOID6
                 effect.ScriptFilePath = APP.LuaManager.GetRobotVoiceScriptPath(VSMRobotVoiceMode.Hard);
+#elif VOCALOID7
+                effect.ScriptFilePath = APP.SequenceManager.RobotVoiceLuaPathByMode(VSMRobotVoiceMode.Hard);
+#endif
                 effect.Timing = VSMMidiEffectTiming.BeforeRendering;
             }
 #endif
-            return new LuaNumber(1);
+                return new LuaNumber(1);
         }
 
         public static void RegisterCommand(LuaRuntime lua)

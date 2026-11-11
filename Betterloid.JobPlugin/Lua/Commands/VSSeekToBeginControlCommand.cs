@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID.MusicalEditor;
 #endif
 
@@ -44,7 +44,7 @@ namespace JobPlugin.Lua.Commands
             var controller = part.GetController(vsmControlType,0);
             if (controller == null)
             {
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
                 var defaultValue = MusicalEditorViewModel.GetDefaultControllerValue(controlparam);
 #elif VOCALOID5
                 var defaultValue = JobPlugin.Instance.MusicalEditor.GetDefaultControllerValue(controlparam);

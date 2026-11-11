@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net8.0-windows;netframework4.6</TargetFrameworks>
+    <TargetFrameworks>net10.0-windows;net8.0-windows;netframework4.6</TargetFrameworks>
     <OutputType>Library</OutputType>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UseWPF>True</UseWPF>
@@ -18,42 +18,51 @@
   <ItemGroup>
     <SupportedPlatform Include="windows" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
-    <DefineConstants>VOCALOID6</DefineConstants>
-  </PropertyGroup>
-
   <PropertyGroup Condition="'$(TargetFramework)' == 'netframework4.6'">
     <DefineConstants>VOCALOID5</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+    <DefineConstants>VOCALOID6</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net10.0-windows'">
+    <DefineConstants>VOCALOID7</DefineConstants>
+  </PropertyGroup>
+ 
 
-  <Target Name="CopyPluginConfig" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyPluginConfig" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="$(ProjectDir)PluginConfig.json" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\PluginConfig.json" />
     <Copy SourceFiles="$(ProjectDir)PluginConfig.json" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\PluginConfig.json" />
+    <Copy SourceFiles="$(ProjectDir)PluginConfig.json" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\PluginConfig.json" />
   </Target>
 
-  <Target Name="CopyDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\$(ProjectName).dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\$(ProjectName).dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\$(ProjectName).dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\$(ProjectName).dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\$(ProjectName).dll" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\$(TargetFramework)\$(ProjectName).dll" />
   </Target>
 
-  <Target Name="CopyLuaDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyLuaDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\lua51.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\lua51.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\lua51.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\lua51.dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\lua51.dll" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\$(TargetFramework)\lua51.dll" />
   </Target>
 
-  <Target Name="CopyEluantDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyEluantDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\Eluant.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\Eluant.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\Eluant.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\Eluant.dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Eluant.dll" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\$(TargetFramework)\Eluant.dll" />
   </Target>
   
-  <Target Name="CopyMessageBoxDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyMessageBoxDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\WpfMessageBoxEx.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\WpfMessageBoxEx.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\WpfMessageBoxEx.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\WpfMessageBoxEx.dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\WpfMessageBoxEx.dll" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\$(TargetFramework)\WpfMessageBoxEx.dll" />
   </Target>
 
-  <Target Name="CopyVSDialogDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows'">
+  <Target Name="CopyVSDialogDLLs" AfterTargets="Build" Condition="'$(TargetFramework)' == 'netframework4.6' Or '$(TargetFramework)' == 'net8.0-windows' Or '$(TargetFramework)' == 'net10.0-windows'">
     <Copy SourceFiles="bin\$(TargetFramework)\VSDialog.dll" DestinationFiles="..\VOCALOID5\Plugins\$(ProjectName)\$(TargetFramework)\VSDialog.dll" />
     <Copy SourceFiles="bin\$(TargetFramework)\VSDialog.dll" DestinationFiles="..\VOCALOID6\Plugins\$(ProjectName)\$(TargetFramework)\VSDialog.dll" />
+    <Copy SourceFiles="bin\$(TargetFramework)\VSDialog.dll" DestinationFiles="..\VOCALOID7\Plugins\$(ProjectName)\$(TargetFramework)\VSDialog.dll" />
   </Target>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
@@ -65,6 +74,14 @@
     <ProjectReference Include="..\WpfMessageBoxEx\WpfMessageBoxEx.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Betterloid" Condition="'$(TargetFramework)' == 'netframework4.6'">
+      <HintPath>..\VOCALOID5\Plugins\Betterloid\$(TargetFramework)\Betterloid.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="VOCALOID5" Condition="'$(TargetFramework)' == 'netframework4.6'">
+      <HintPath>..\VOCALOID5\VOCALOID5.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Betterloid" Condition="'$(TargetFramework)' == 'net8.0-windows'">
       <HintPath>..\VOCALOID6\Plugins\Betterloid\$(TargetFramework)\Betterloid.dll</HintPath>
       <Private>False</Private>
@@ -73,12 +90,12 @@
       <HintPath>..\VOCALOID6\VOCALOID6.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Betterloid" Condition="'$(TargetFramework)' == 'netframework4.6'">
-      <HintPath>..\VOCALOID5\Plugins\Betterloid\$(TargetFramework)\Betterloid.dll</HintPath>
+    <Reference Include="Betterloid" Condition="'$(TargetFramework)' == 'net10.0-windows'">
+      <HintPath>..\VOCALOID7\Plugins\Betterloid\$(TargetFramework)\Betterloid.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="VOCALOID5" Condition="'$(TargetFramework)' == 'netframework4.6'">
-      <HintPath>..\VOCALOID5\VOCALOID5.exe</HintPath>
+    <Reference Include="VOCALOID7" Condition="'$(TargetFramework)' == 'net10.0-windows'">
+      <HintPath>..\VOCALOID7\VOCALOID7.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

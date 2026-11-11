@@ -43,7 +43,7 @@ namespace JobPlugin.Lua.Commands
 #if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             luaNote.DurTick = note.DurationTick.Value;
             luaNote.PosTick = note.RelPosTick.Value;
 #endif
@@ -56,7 +56,7 @@ namespace JobPlugin.Lua.Commands
             luaNote.Decay = expression.Decay;
             luaNote.Opening = expression.Opening;
             luaNote.RisePort = expression.RisePort ? 1 : 0;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             long vibTicks = note.VibratoDurationTick.Value;
             if (luaNote.DurTick > 0)
             {

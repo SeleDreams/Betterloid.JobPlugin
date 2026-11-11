@@ -4,6 +4,7 @@
   "PluginType": "Editor",
   "PluginAssemblyV5": "netframework4.6/JobPlugin.dll",
   "PluginAssemblyV6": "net8.0-windows/JobPlugin.dll",
+  "PluginAssemblyV7": "net10.0-windows/JobPlugin.dll",
   "PluginName": "JobPlugin",
   "PluginVersion": "1.0.0",
   "PluginNamespace": "JobPlugin",

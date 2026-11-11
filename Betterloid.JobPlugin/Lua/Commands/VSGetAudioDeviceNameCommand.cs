@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Eluant;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VAE;
 #elif VOCALOID5
@@ -23,7 +23,7 @@ namespace JobPlugin.Lua.Commands
             VEAudioDevice currentAudioDevice;
 #if VOCALOID5
             currentAudioDevice = audioDeviceManager.GetCurrentAudioDevice();
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             currentAudioDevice = audioDeviceManager.CurrentAudioDevice;
 #endif
             return currentAudioDevice.DisplayName();

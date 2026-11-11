@@ -30,7 +30,7 @@ namespace JobPlugin.Lua.Commands
             luaTempo.Tempo = tempo.Value * 0.01f;
 #if VOCALOID5
             luaTempo.PosTick = tempo.RelPosition.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             luaTempo.PosTick = tempo.RelPosTick.Value;
 #endif
             if (!isFirstTempo && previousCurrentTempo != null && previousCurrentTempo.Next == null)

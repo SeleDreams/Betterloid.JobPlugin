@@ -5,7 +5,7 @@ using Yamaha.VOCALOID.VOCALOID5.MusicalEditor;
 using Yamaha.VOCALOID.VOCALOID5.TrackEditor;
 using Yamaha.VOCALOID.VSM;
 using Yamaha.VOCALOID.VSStyle;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID.VDM;
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.MusicalEditor;

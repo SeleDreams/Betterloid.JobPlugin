@@ -31,18 +31,22 @@ namespace JobPlugin.Lua.Commands
             {
                 return 1;
             }
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             var tick = new VSMRelTick(posTick);
 #elif VOCALOID5
             var tick = new VSMRelTick((int)posTick);
 #endif
-
-            var result = part.GetController(vsmControlType, tick, false, true);
-            if (result == null)
+            WIVSMMidiController result;
+            try
             {
                 result = part.InsertController(tick, vsmControlType, value);
             }
-#if VOCALOID6
+            catch
+            {
+                result = part.GetController(vsmControlType, tick, false, true);
+            }
+            //}
+#if VOCALOID6 || VOCALOID7
             var resultPos = result.RelPosTick;
 #elif VOCALOID5
             var resultPos = result.RelPosition;

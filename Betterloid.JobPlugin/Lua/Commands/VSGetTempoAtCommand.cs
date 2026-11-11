@@ -15,7 +15,7 @@ namespace JobPlugin.Lua.Commands
             VSMAbsTick absTicks;
 #if VOCALOID5
             absTicks = new VSMAbsTick((int)ticks);
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             absTicks = new VSMAbsTick(ticks);
 #endif
             var tempo = musicalEditor.ActiveTrack.Parent.GetTempo(absTicks, true, false);

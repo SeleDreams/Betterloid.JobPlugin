@@ -6,7 +6,7 @@ using JobPlugin.Lua.Types;
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 #endif
 namespace JobPlugin.Lua.Commands
@@ -38,7 +38,7 @@ namespace JobPlugin.Lua.Commands
                 wavInfo.Comment = "";
                 wavInfo.SampleReso = 16;
                 wavInfo.SampleRate = waveFile.SampleRate;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
                 wavInfo.Channels = waveFile.ChannelCount;
 #elif VOCALOID5
                 wavInfo.Channels = waveFile.Channel;

@@ -16,7 +16,7 @@ using Yamaha.VOCALOID.VOCALOID5;
 using Yamaha.VOCALOID.VOCALOID5.MusicalEditor;
 using Yamaha.VOCALOID.VOCALOID5.AudioEffect;
 using Yamaha.VOCALOID.VSStyle;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID.MusicalEditor;
 using Yamaha.VOCALOID.AudioEffect;
 #endif
@@ -29,6 +29,7 @@ namespace JobPlugin.Lua.Commands
             Debug.WriteLine("VSGetMusicalPartSinger called.");
             VSLuaMusicalSinger luaSinger = new VSLuaMusicalSinger();
             var part = JobPlugin.Instance.MusicalEditor.ActivePart;
+            var track = JobPlugin.Instance.MusicalEditor.ActiveTrack;
             VoiceBank vb;
 #if VOCALOID5
             vb = App.DatabaseManager.GetVoiceBankByCompID(part.VoiceBankID);
@@ -49,9 +50,14 @@ namespace JobPlugin.Lua.Commands
             success = midiEffect.GetParameterInt(midiEffect.GetParameterNameVoiceColor(VSMVoiceColorParameterType.Air), out clearness);
             luaSinger.Clearness = success ? 127 - clearness : 0;
             luaSinger.VirtualBankSelect = vb.LangID;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             vb = part.VoiceBank();
-            WIVSMVoiceColorEffect midiEffect = part.VoiceColorEffect;
+            WIVSMVoiceColorEffect midiEffect;
+#if VOCALOID6
+            midiEffect = part.VoiceColorEffect;
+#elif VOCALOID7
+            midiEffect = track.VoiceColorEffect;
+#endif
             luaSinger.Opening = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Mouth).RawInt;
             luaSinger.Breathiness = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Breathiness).RawInt;
             luaSinger.GenderFactor = midiEffect.GetValueByIndex((ulong)VSMVoiceColor.Character).RawInt;

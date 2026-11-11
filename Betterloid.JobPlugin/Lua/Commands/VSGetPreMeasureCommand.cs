@@ -4,7 +4,7 @@ using Eluant;
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
 using Yamaha.VOCALOID.VSM;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VSM;
 #endif

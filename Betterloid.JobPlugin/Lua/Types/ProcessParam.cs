@@ -2,7 +2,7 @@
 using System;
 using Eluant;
 
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID.VSM;
 #elif VOCALOID5
 using Yamaha.VOCALOID.VSM;
@@ -27,7 +27,7 @@ namespace JobPlugin.Lua.Types
                 throw new NoActivePartException();
             }
             WIVSMNote note;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             note = activePart.FirstSelectedNote;
 #elif VOCALOID5
             note = activePart.Notes.FirstOrDefault(n => n.IsSelected);
@@ -36,12 +36,12 @@ namespace JobPlugin.Lua.Types
             {
 #if VOCALOID5
                 BeginPosTick = note.RelPosition.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
                 BeginPosTick = note.RelPosTick.Value;
 
 #endif
             }
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             note = activePart.LastSelectedNote;
 #elif VOCALOID5
             note = activePart.Notes.LastOrDefault(n => n.IsSelected);
@@ -51,7 +51,7 @@ namespace JobPlugin.Lua.Types
             {
 #if VOCALOID5
                 EndPosTick = note.RelEnd.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
                 EndPosTick = note.RelEndTick.Value;
 #endif
             }
@@ -59,7 +59,7 @@ namespace JobPlugin.Lua.Types
             {
 #if VOCALOID5
                 EndPosTick = activePart.Duration.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
                 EndPosTick = activePart.DurationTick.Value;
 #endif
             }
@@ -77,7 +77,7 @@ namespace JobPlugin.Lua.Types
             }
             SongPosTick = pos;
         
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             var pos = musicalEditor.SongPosition.Value;
             if (pos < activePart.AbsPosTick.Value)
             {

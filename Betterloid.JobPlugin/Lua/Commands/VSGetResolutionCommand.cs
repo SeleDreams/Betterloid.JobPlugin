@@ -4,7 +4,7 @@ using Eluant;
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
 using Yamaha.VOCALOID.VSM;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.VSM;
 #endif
@@ -16,7 +16,7 @@ namespace JobPlugin.Lua.Commands
         private static int VSGetResolution()
         {
             Debug.WriteLine("VSGetResolution called.");
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             return VSMTickRangeExtension.Resolution;
 #elif VOCALOID5
             return VSMLoopRangeExtension.Resolution;

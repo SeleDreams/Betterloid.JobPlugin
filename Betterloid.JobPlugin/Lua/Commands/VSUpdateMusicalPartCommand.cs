@@ -20,7 +20,7 @@ namespace JobPlugin.Lua.Commands
             part.SetName(luaPart.Name);
             VSMAbsTick ticks;
             VSMRelTick durationTicks;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             ticks = new VSMAbsTick(luaPart.PosTick);
             durationTicks = new VSMRelTick(luaPart.DurTick);
 #elif VOCALOID5

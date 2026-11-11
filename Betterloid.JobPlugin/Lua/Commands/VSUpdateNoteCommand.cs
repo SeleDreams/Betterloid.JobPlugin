@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 #endif
 namespace JobPlugin.Lua.Commands
@@ -35,7 +35,7 @@ namespace JobPlugin.Lua.Commands
             {
                 note.IsProtected = false;
             }
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             note.SetPhonemes(luaNote.Phonemes, true, note.LangID);
             note.SetDuration(new VSMRelTick(luaNote.DurTick));
             part.MoveNote(new VSMRelTick(luaNote.PosTick), note);

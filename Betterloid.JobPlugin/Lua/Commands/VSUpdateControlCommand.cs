@@ -27,7 +27,7 @@ namespace JobPlugin.Lua.Commands
             }
             var controller = (JobPlugin.Instance.Controllers[controlType])[(int)control.ObjID];
             VSMRelTick ticks;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             ticks = new VSMRelTick(control.PosTick);
 #elif VOCALOID5
             ticks = new VSMRelTick((int)control.PosTick);

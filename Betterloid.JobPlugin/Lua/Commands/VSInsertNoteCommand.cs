@@ -9,7 +9,7 @@ using System.Diagnostics;
 
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 #endif
 namespace JobPlugin.Lua.Commands
@@ -27,7 +27,7 @@ namespace JobPlugin.Lua.Commands
             var musicalEditor = JobPlugin.Instance.MusicalEditor;
             var part = musicalEditor.ActivePart ?? throw new NoActivePartException();
 
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             VoiceBank vb = part.VoiceBank();
             var note = part.InsertNote(new VSMRelTick(luaNote.PosTick), new VSMNoteEvent((int)luaNote.DurTick, luaNote.NoteNum, luaNote.Velocity), part.GetDefaultNoteExpression(), part.GetDefaultAiNoteExpression(), luaNote.Lyric, luaNote.Phonemes, true, vb.NativeLangID);
 #elif VOCALOID5

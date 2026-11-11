@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.TrackEditor;
 
@@ -45,7 +45,7 @@ namespace JobPlugin.Lua.Commands
                 luaWAVPart.Comment = "";
                 luaWAVPart.SampleReso = 16;
                 luaWAVPart.SampleRate = waveFile.SampleRate;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
                 luaWAVPart.Channels = waveFile.ChannelCount;
 #elif VOCALOID5
                 luaWAVPart.Channels = waveFile.Channel;

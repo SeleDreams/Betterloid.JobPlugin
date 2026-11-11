@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Eluant;
 #if VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 #endif
 

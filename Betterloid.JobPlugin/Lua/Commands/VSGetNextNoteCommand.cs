@@ -42,7 +42,7 @@ namespace JobPlugin.Lua.Commands
 #if VOCALOID5
             luaNote.DurTick = note.Duration.Tick;
             luaNote.PosTick = note.RelPosition.Tick;
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             luaNote.DurTick = note.DurationTick.Value;
             luaNote.PosTick = note.RelPosTick.Value;
 #endif

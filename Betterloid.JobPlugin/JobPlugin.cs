@@ -9,7 +9,7 @@ using JobPlugin.Lua.Types;
 using System.Globalization;
 using Microsoft.Win32;
 using System.Windows.Forms;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID;
 using Yamaha.VOCALOID.MusicalEditor;
 using Yamaha.VOCALOID.VSM;
@@ -57,7 +57,7 @@ namespace JobPlugin
             {
 #if VOCALOID5
                 MusicalEditor.Sequence.Undo();
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
                 MusicalEditor.Sequence.VSMSequence.Undo();
 #endif
             }

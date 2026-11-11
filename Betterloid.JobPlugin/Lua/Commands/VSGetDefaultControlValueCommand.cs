@@ -3,7 +3,7 @@ using JobPlugin.Lua.Types;
 using System;
 using System.Diagnostics;
 using Yamaha.VOCALOID;
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
 using Yamaha.VOCALOID.MusicalEditor;
 #elif VOCALOID5
 using Yamaha.VOCALOID.VOCALOID5;
@@ -35,7 +35,7 @@ namespace JobPlugin.Lua.Commands
             }
 
             var controlParameterType = VSLuaControl.VSControlTypeToControlParameterTypeEnum(controlType);
-#if VOCALOID6
+#if VOCALOID6 || VOCALOID7
             var defaultValue  = MusicalEditorViewModel.GetDefaultControllerValue(controlParameterType);
 #elif VOCALOID5
             var defaultValue = JobPlugin.Instance.MusicalEditor.GetDefaultControllerValue(controlParameterType);

@@ -34,7 +34,7 @@ namespace JobPlugin.Lua.Commands
                 var lastNote = part.Notes.Last();
                 luaPart.PlayTime = (lastNote.RelPosition.Tick + lastNote.Duration.Tick) - firstNote.RelPosition.Tick;
             }
-#elif VOCALOID6
+#elif VOCALOID6 || VOCALOID7
             if (firstNote != null)
             {
 
